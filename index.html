@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0e1117">
+  <title>LinuxPath — Learn Linux</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- Topbar -->
+  <div id="topbar">
+    <!-- Hamburger: shown only in course mode on mobile (CSS controls responsive, JS controls course/picker) -->
+    <button class="menu-btn" id="menu-btn" onclick="openDrawer()" aria-label="Open menu" style="display:none">
+      <span></span><span></span><span></span>
+    </button>
+    <!-- Back button: shown only in course mode -->
+    <button class="back-courses-btn" id="back-to-courses" onclick="backToCourses()" style="display:none">
+      ← Courses
+    </button>
+    <a class="logo" href="#" onclick="return false;">
+      <div class="logo-mark">$_</div>
+      <div class="logo-name">Linux<span>Path</span></div>
+    </a>
+    <!-- Progress bar: shown only in course mode -->
+    <div class="prog-wrap" id="topbar-course-info" style="display:none">
+      <div class="prog-lbl" id="prog-lbl">Loading...</div>
+      <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+    <!-- XP + streak: shown only in course mode -->
+    <div class="top-right" id="top-right" style="display:none">
+      <div class="badge badge-str">🔥 <span id="streak">0</span></div>
+      <div class="badge badge-xp">⚡ <span id="xp-display">0</span> XP</div>
+    </div>
+  </div>
+
+  <!-- ══ COURSE PICKER (home screen) ══ -->
+  <div id="course-picker" style="display:none">
+    <div class="cp-hero">
+      <div class="cp-hero-eyebrow">Welcome to LinuxPath</div>
+      <h1 class="cp-hero-title">Choose your path</h1>
+      <p class="cp-hero-sub">Pick a course to begin learning. Your progress is saved automatically.</p>
+    </div>
+    <div id="course-grid"></div>
+  </div>
+
+  <!-- ══ ACTIVE COURSE LAYOUT ══ -->
+  <div id="layout" style="display:none">
+    <!-- Desktop sidebar -->
+    <div id="sidebar"></div>
+    <!-- Main content -->
+    <div id="content">
+      <div id="loader">
+        <div class="loader-dot"></div>
+        Loading...
+      </div>
+      <div id="lesson-area" style="display:none"></div>
+      <div id="complete"></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Mobile drawer overlay -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- Mobile drawer -->
+<div id="drawer">
+  <div id="drawer-header">
+    <div class="logo">
+      <div class="logo-mark">$_</div>
+      <div class="logo-name">Linux<span>Path</span></div>
+    </div>
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div id="drawer-stats">
+    <div class="badge badge-str">🔥 <span id="drawer-streak">0</span> day streak</div>
+    <div class="badge badge-xp">⚡ <span id="drawer-xp">0</span> XP</div>
+  </div>
+  <div id="drawer-nav"></div>
+</div>
+
+<div id="confetti"></div>
+<script src="app.js"></script>
+</body>
+</html>
