@@ -1,0 +1,12 @@
+{
+  "id": "linux",
+  "title": "Linux Fundamentals",
+  "description": "Master the terminal from scratch — navigation, files, permissions, search, and more.",
+  "icon": "🐧",
+  "accent": "#00d084",
+  "difficulty": "beginner",
+  "sections_count": 3,
+  "files": ["curriculum.json"],
+  "complete_message": "Sections 1–3 complete!",
+  "complete_sub": "You've mastered the terminal, file operations, and searching. Sections 4–7 coming soon."
+}
