@@ -1,0 +1,1601 @@
+{
+  "meta": {
+    "title": "LinuxPath",
+    "version": "1.0",
+    "total_sections": 7,
+    "sections_included": [1, 2, 3]
+  },
+  "sections": [
+    {
+      "id": 1,
+      "title": "The terminal & filesystem basics",
+      "subtitle": "Your first commands, navigating files",
+      "difficulty": "beginner",
+      "color": "teal",
+      "lessons": [
+        {
+          "id": "1.1",
+          "title": "Your first commands",
+          "command": "echo, date, whoami, cal",
+          "description": "Understand what the terminal is and run your first 4 commands",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "What is the terminal?",
+              "text": "The <hl>terminal</hl> is a text interface where you type commands to control your computer. Unlike clicking icons, you type exactly what you want Linux to do.\n\nEvery command follows the same pattern:\n<cmd>command [options] [arguments]</cmd>\n\nWhen you open a terminal you'll see a <hl>prompt</hl> ending in <hl>$</hl> — that means Linux is waiting for your input.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "echo Hello, Linux!", "output": "Hello, Linux!" },
+                { "prompt": "user@linux:~$", "cmd": "date", "output": "Mon Mar 23 09:41:22 IST 2026" },
+                { "prompt": "user@linux:~$", "cmd": "whoami", "output": "user" },
+                { "prompt": "user@linux:~$", "cmd": "cal", "output": "   March 2026\nSu Mo Tu We Th Fr Sa\n 1  2  3  4  5  6  7\n 8  9 10 11 12 13 14\n15 16 17 18 19 20 21\n22 23 24 25 26 27 28\n29 30 31" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does the $ symbol at the end of a prompt mean?",
+              "options": [
+                "The terminal is busy processing",
+                "You are logged in as root (admin)",
+                "The terminal is ready for your command",
+                "A background script is running"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! $ means the shell is ready and waiting for your input.",
+                "bad": "Not quite — $ simply signals that the shell is idle and ready for a new command."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To print a message to the terminal, use: ", {"blank": 0}, " \"Good morning\""],
+              "words": ["echo", "print", "say", "write"],
+              "correct": ["echo"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! echo prints any text you give it straight to the terminal.",
+                "bad": "Not quite — echo is the command for printing text. print and say don't exist as standard commands."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Which command?",
+              "question": "You want to know which user account you're currently logged in as. Which command do you run?",
+              "options": ["echo", "cal", "whoami", "date"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! whoami prints your current username.",
+                "bad": "whoami is the command that prints your current logged-in username."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Print the text 'I love Linux' to the terminal.",
+              "placeholder": "type your command here...",
+              "expected": ["echo I love Linux", "echo 'I love Linux'", "echo \"I love Linux\""],
+              "hint": "Use echo followed by the text you want to print.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>✓ Command accepted!</success>\n<info>I love Linux</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: echo \"your text here\" prints text to the terminal.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.2",
+          "title": "Where am I? — pwd",
+          "command": "pwd",
+          "description": "Find your current location in the Linux filesystem",
+          "xp_total": 40,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The filesystem tree",
+              "text": "Linux organises everything in a tree starting at <hl>/</hl> (called the <hl>root</hl>). Every file and folder has an address called a <hl>path</hl>.\n\n<cmd>pwd</cmd> stands for <hl>print working directory</hl>. It tells you exactly where you are in the tree right now.\n\nYour home folder is always at <hl>/home/your-username</hl> and is also written as <hl>~</hl> (tilde).",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "pwd", "output": "/home/user" },
+                { "prompt": "user@linux:~$", "cmd": "cd /etc", "output": "" },
+                { "prompt": "user@linux:/etc$", "cmd": "pwd", "output": "/etc" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To find out your current directory location, type: ", {"blank": 0}],
+              "words": ["pwd", "ls", "cd", "loc"],
+              "correct": ["pwd"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! pwd = print working directory.",
+                "bad": "Not quite — pwd (print working directory) shows your current location."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Reading a path",
+              "question": "pwd outputs /home/user/projects. What does this tell you?",
+              "options": [
+                "You are in the root / directory",
+                "You are in a folder called projects, inside user, inside home",
+                "You are in your home folder ~",
+                "The projects folder is empty"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Paths are read left to right — / is root, then home, then user, then projects.",
+                "bad": "Paths read left to right. /home/user/projects means you're inside projects, which is inside user, which is inside home."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Print your current working directory to the terminal.",
+              "placeholder": "type your command here...",
+              "expected": ["pwd"],
+              "hint": "Three letters: print working directory.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>/home/user</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: pwd stands for print working directory.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.3",
+          "title": "Listing files — ls",
+          "command": "ls",
+          "description": "See what's inside a directory, and use flags for more detail",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The ls command",
+              "text": "<cmd>ls</cmd> lists the files and folders in your current directory.\n\nUseful flags:\n<cmd>ls -l</cmd> — long format (size, date, permissions)\n<cmd>ls -a</cmd> — show hidden files (names starting with .)\n<cmd>ls -lh</cmd> — long format with human-readable sizes (KB, MB)\n\nFlags can be combined: <cmd>ls -la</cmd> shows hidden files in long format.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "ls", "output": "Documents  Downloads  Music  notes.txt  script.sh" },
+                { "prompt": "user@linux:~$", "cmd": "ls -l", "output": "drwxr-xr-x 2 user user 4096 Mar 23 Documents\ndrwxr-xr-x 2 user user 4096 Mar 23 Downloads\n-rw-r--r-- 1 user user  128 Mar 23 notes.txt\n-rwxr-xr-x 1 user user  512 Mar 23 script.sh" },
+                { "prompt": "user@linux:~$", "cmd": "ls -a", "output": ".  ..  .bashrc  .profile  Documents  Downloads  notes.txt" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "Which flag makes ls show hidden files (files starting with a dot)?",
+              "options": ["ls -l", "ls -h", "ls -a", "ls -r"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! -a shows all files including hidden ones.",
+                "bad": "The -a flag stands for 'all' — it reveals hidden files whose names start with a dot."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To list files in long format with human-readable sizes, type: ", {"blank": 0}, " -lh"],
+              "words": ["ls", "dir", "list", "show"],
+              "correct": ["ls"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! ls -lh gives you file details with sizes in KB/MB instead of raw bytes.",
+                "bad": "ls is the listing command. ls -lh adds long format and human-readable sizes."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Flag practice",
+              "sentence": ["To see hidden files in long format, combine flags: ls ", {"blank": 0}],
+              "words": ["-la", "-lh", "-r", "-ls"],
+              "correct": ["-la"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -la combines -l (long) and -a (all/hidden) into one flag.",
+                "bad": "-la combines -l for long format and -a for all files including hidden."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Arrange these tokens to list all files including hidden ones in long format:",
+              "tokens": ["-la", "ls", "/home/user"],
+              "correct_order": ["ls", "-la", "/home/user"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Command first, flags second, path last.",
+                "bad": "Order matters: command (ls) → flags (-la) → target path (/home/user)."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "List all files in the current directory including hidden files.",
+              "placeholder": "type your command here...",
+              "expected": ["ls -a", "ls -la", "ls -al"],
+              "hint": "Use the -a flag to show hidden files.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>.  ..  .bashrc  .profile  Documents  Downloads  notes.txt  script.sh</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: add the -a flag to ls to show hidden files.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.4",
+          "title": "Changing directories — cd",
+          "command": "cd",
+          "description": "Move around the filesystem using absolute and relative paths",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The cd command",
+              "text": "<cmd>cd</cmd> stands for <hl>change directory</hl>. It moves you to a different location in the filesystem.\n\nUseful shortcuts:\n<cmd>cd ~</cmd> — go to your home directory\n<cmd>cd ..</cmd> — go up one level (parent directory)\n<cmd>cd -</cmd> — go back to the previous directory\n<cmd>cd /</cmd> — go to the root directory\n\n<hl>Absolute path</hl>: starts from root — <cmd>/home/user/Documents</cmd>\n<hl>Relative path</hl>: from where you are now — <cmd>Documents/projects</cmd>",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "cd Documents", "output": "" },
+                { "prompt": "user@linux:~/Documents$", "cmd": "pwd", "output": "/home/user/Documents" },
+                { "prompt": "user@linux:~/Documents$", "cmd": "cd ..", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "cd /etc", "output": "" },
+                { "prompt": "user@linux:/etc$", "cmd": "cd ~", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "pwd", "output": "/home/user" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You are in /home/user/projects/app. Which command takes you up one level to /home/user/projects?",
+              "options": ["cd ~", "cd /", "cd ..", "cd up"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! cd .. always moves you one level up to the parent directory.",
+                "bad": "cd .. moves up one directory level. ~ goes to home, / goes to root."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To return to your home directory from anywhere, type: ", {"blank": 0}, " ~"],
+              "words": ["cd", "go", "ls", "mv"],
+              "correct": ["cd"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! cd ~ is the fastest way home from anywhere.",
+                "bad": "cd is the change directory command. cd ~ takes you home."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Absolute vs relative",
+              "sentence": ["An absolute path always starts with ", {"blank": 0}, " (the root)"],
+              "words": ["/", "~", ".", ".."],
+              "correct": ["/"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Absolute paths always start from / (root), like /home/user/Documents.",
+                "bad": "Absolute paths start from / (root). Relative paths start from your current location."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Arrange these to navigate to the Documents folder inside your home directory:",
+              "tokens": ["Documents", "cd", "~/"],
+              "correct_order": ["cd", "~/", "Documents"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! cd ~/Documents takes you directly to Documents in your home folder.",
+                "bad": "cd comes first, then the path: cd ~/Documents"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Navigate to the /etc directory using an absolute path.",
+              "placeholder": "type your command here...",
+              "expected": ["cd /etc"],
+              "hint": "Use cd with an absolute path starting from /",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct! You are now in /etc</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: cd /etc — use the full absolute path starting with /</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.5",
+          "title": "Creating directories — mkdir",
+          "command": "mkdir",
+          "description": "Create new directories, including nested ones with -p",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Making directories",
+              "text": "<cmd>mkdir</cmd> stands for <hl>make directory</hl>. It creates a new folder.\n\n<cmd>mkdir projects</cmd> — creates a folder called projects here\n<cmd>mkdir -p a/b/c</cmd> — creates nested folders in one go (the <hl>-p</hl> flag creates parent directories as needed)\n<cmd>mkdir dir1 dir2 dir3</cmd> — create multiple folders at once",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "mkdir projects", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "ls", "output": "Documents  Downloads  projects" },
+                { "prompt": "user@linux:~$", "cmd": "mkdir -p work/2026/march", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "ls work/2026", "output": "march" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To create nested folders in one command, use: mkdir ", {"blank": 0}, " parent/child/grandchild"],
+              "words": ["-p", "-r", "-n", "-a"],
+              "correct": ["-p"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -p creates all parent directories that don't exist yet.",
+                "bad": "-p tells mkdir to create all parent directories along the path."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You run mkdir a/b/c but folder 'a' doesn't exist yet. What happens?",
+              "options": [
+                "Linux creates a, b, and c automatically",
+                "Only c is created inside the current directory",
+                "You get an error: no such file or directory",
+                "Linux asks you to confirm each folder"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Without -p, mkdir fails if the parent doesn't exist. Use mkdir -p to avoid this.",
+                "bad": "Without -p, mkdir fails if any parent directory is missing. Always use mkdir -p for nested paths."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Create a nested folder structure: projects/linux/section1 in one command.",
+              "placeholder": "type your command here...",
+              "expected": ["mkdir -p projects/linux/section1"],
+              "hint": "Use mkdir -p to create all parent folders at once.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct! Three nested directories created in one go.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: mkdir -p projects/linux/section1 creates all folders along the path.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.6",
+          "title": "Creating, copying & moving files",
+          "command": "touch, cp, mv",
+          "description": "Create empty files, copy them, and move or rename them",
+          "xp_total": 75,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "touch, cp, mv",
+              "text": "<cmd>touch filename</cmd> — creates an empty file (or updates its timestamp if it exists)\n\n<cmd>cp source destination</cmd> — copies a file\n<cmd>cp -r folder/ destination/</cmd> — copy an entire folder (-r means recursive)\n\n<cmd>mv source destination</cmd> — moves a file to a new location\n<cmd>mv oldname newname</cmd> — renames a file (mv is also how you rename!)",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "touch notes.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "cp notes.txt backup.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "ls", "output": "backup.txt  notes.txt" },
+                { "prompt": "user@linux:~$", "cmd": "mv backup.txt Documents/", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "mv notes.txt todo.txt", "output": "" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To rename a file from old.txt to new.txt: ", {"blank": 0}, " old.txt new.txt"],
+              "words": ["mv", "cp", "rn", "rename"],
+              "correct": ["mv"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! mv is used for both moving AND renaming files.",
+                "bad": "mv (move) is used for renaming too. mv old.txt new.txt renames the file in place."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Copying folders",
+              "sentence": ["To copy an entire directory, use: cp ", {"blank": 0}, " myfolder/ backup/"],
+              "words": ["-r", "-a", "-f", "-p"],
+              "correct": ["-r"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -r means recursive — it copies the folder and everything inside it.",
+                "bad": "-r (recursive) is needed to copy a folder and all its contents."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does touch do if the file already exists?",
+              "options": [
+                "It deletes and recreates the file",
+                "It shows an error",
+                "It updates the file's last-modified timestamp",
+                "Nothing — it ignores existing files"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! touch on an existing file just updates its timestamp without changing its content.",
+                "bad": "touch on an existing file updates its timestamp. It's a safe command — it never overwrites content."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Arrange these tokens to copy report.txt into the Documents folder:",
+              "tokens": ["Documents/", "cp", "report.txt"],
+              "correct_order": ["cp", "report.txt", "Documents/"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! cp source destination — source first, destination second.",
+                "bad": "cp takes source first, then destination: cp report.txt Documents/"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Create an empty file called index.html in the current directory.",
+              "placeholder": "type your command here...",
+              "expected": ["touch index.html"],
+              "hint": "Use touch to create an empty file.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>✓ index.html created successfully.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: touch index.html creates an empty file.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.7",
+          "title": "Deleting files & directories — rm",
+          "command": "rm, rmdir",
+          "description": "Delete files and empty directories safely — no recycle bin!",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "rm and rmdir",
+              "text": "<cmd>rm filename</cmd> — deletes a file permanently\n<cmd>rm -r folder/</cmd> — deletes a folder and everything inside it\n<cmd>rm -i filename</cmd> — asks for confirmation before deleting (safe mode)\n<cmd>rmdir folder/</cmd> — deletes an empty directory only\n\n<warn>Warning: Linux has NO recycle bin. rm is permanent. Always double-check before running rm -r.</warn>",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "rm old.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "rm -i important.txt", "output": "rm: remove regular file 'important.txt'? y" },
+                { "prompt": "user@linux:~$", "cmd": "rmdir empty_folder", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "rm -r old_project/", "output": "" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Safety check",
+              "question": "You run rm -r /home/user/documents. What happens to the documents folder?",
+              "options": [
+                "It moves to the Recycle Bin",
+                "It is permanently deleted along with everything inside",
+                "Only empty subfolders are deleted",
+                "Linux asks for confirmation for each file"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! rm -r is permanent and immediate. There is no undo.",
+                "bad": "rm -r permanently deletes the folder and all its contents. There is no recycle bin in Linux."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Which command?",
+              "question": "You want to delete a folder but only if it's empty. Which command should you use?",
+              "options": ["rm folder", "rm -r folder", "rmdir folder", "del folder"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! rmdir only works on empty directories — it's a safer option.",
+                "bad": "rmdir only deletes empty directories. It will fail with an error if the folder has any contents — making it safer than rm -r."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Safe deletion",
+              "sentence": ["To delete with confirmation prompts, use: rm ", {"blank": 0}, " filename"],
+              "words": ["-i", "-r", "-f", "-v"],
+              "correct": ["-i"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! -i (interactive) makes rm ask before deleting each file.",
+                "bad": "-i makes rm ask for confirmation before each deletion. Good habit when deleting important files."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Delete a file called temp.log from the current directory.",
+              "placeholder": "type your command here...",
+              "expected": ["rm temp.log", "rm -i temp.log"],
+              "hint": "Use rm followed by the filename.",
+              "xp": 10,
+              "output": {
+                "ok": "<success>✓ temp.log deleted.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: rm temp.log deletes the file permanently.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "1.8",
+          "title": "Section 1 review",
+          "command": "mixed",
+          "description": "Reinforce everything from section 1 with mixed exercises",
+          "xp_total": 80,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review — navigation",
+              "question": "Which command shows you your current directory location?",
+              "options": ["ls", "cd", "pwd", "dir"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! pwd = print working directory.",
+                "bad": "pwd (print working directory) shows where you are."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — fill blank",
+              "sentence": ["To go up one directory level: cd ", {"blank": 0}],
+              "words": ["..", ".", "~", "/"],
+              "correct": [".."],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! cd .. moves to the parent directory.",
+                "bad": "cd .. (two dots) moves you up one level to the parent directory."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review — reorder",
+              "instruction": "Arrange to create a new directory called myapp:",
+              "tokens": ["myapp", "mkdir"],
+              "correct_order": ["mkdir", "myapp"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! mkdir myapp creates the directory.",
+                "bad": "Command first: mkdir myapp"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review — files",
+              "question": "Which command creates an empty file called notes.txt?",
+              "options": ["mkdir notes.txt", "touch notes.txt", "create notes.txt", "echo notes.txt"],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! touch creates a new empty file.",
+                "bad": "touch creates empty files. mkdir creates directories."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — copying",
+              "sentence": ["To copy file.txt to backup.txt: ", {"blank": 0}, " file.txt backup.txt"],
+              "words": ["cp", "mv", "copy", "dup"],
+              "correct": ["cp"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! cp copies, mv moves/renames.",
+                "bad": "cp (copy) duplicates the file. mv would move/rename it instead."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "Move the file report.txt into the Documents folder.",
+              "placeholder": "type your command here...",
+              "expected": ["mv report.txt Documents/", "mv report.txt Documents", "mv report.txt ~/Documents/", "mv report.txt ~/Documents"],
+              "hint": "mv source destination",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ report.txt moved to Documents/</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: mv report.txt Documents/ — source then destination.</info>"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "List all files including hidden ones in long format.",
+              "placeholder": "type your command here...",
+              "expected": ["ls -la", "ls -al", "ls -l -a", "ls -a -l"],
+              "hint": "Combine -l and -a flags.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>total 48\ndrwxr-xr-x  8 user user 4096 Mar 23 .\ndrwxr-xr-x 12 root root 4096 Mar 23 ..\n-rw-r--r--  1 user user  220 Mar 23 .bashrc</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: ls -la shows all files including hidden ones in long format.</info>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Reading & writing files",
+      "subtitle": "View, search, and edit file content",
+      "difficulty": "beginner",
+      "color": "blue",
+      "lessons": [
+        {
+          "id": "2.1",
+          "title": "Printing file contents — cat",
+          "command": "cat",
+          "description": "Display file contents and concatenate multiple files",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The cat command",
+              "text": "<cmd>cat</cmd> stands for <hl>concatenate</hl>. It reads files and prints their contents to the terminal.\n\n<cmd>cat file.txt</cmd> — print entire file\n<cmd>cat file1.txt file2.txt</cmd> — print both files one after another\n<cmd>cat -n file.txt</cmd> — show line numbers\n\nBest for small files. For large files, use <cmd>less</cmd> instead — cat will flood your screen.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "cat notes.txt", "output": "Meeting at 10am\nBuy groceries\nFinish Linux course" },
+                { "prompt": "user@linux:~$", "cmd": "cat -n notes.txt", "output": "     1\tMeeting at 10am\n     2\tBuy groceries\n     3\tFinish Linux course" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To print file contents with line numbers: cat ", {"blank": 0}, " file.txt"],
+              "words": ["-n", "-l", "-v", "-c"],
+              "correct": ["-n"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! cat -n prefixes every line with its line number.",
+                "bad": "-n adds line numbers to the output."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "When to use cat",
+              "question": "You need to read a 50,000-line server log file. Should you use cat?",
+              "options": [
+                "Yes, cat is always the right choice for files",
+                "No — use less instead so you can scroll through it",
+                "Yes but with cat -n for line numbers",
+                "No — use ls to read files"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! cat dumps everything at once — use less for large files so you can scroll.",
+                "bad": "cat prints everything at once, flooding your terminal. For large files, less lets you scroll page by page."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Print the contents of a file called config.txt to the terminal.",
+              "placeholder": "type your command here...",
+              "expected": ["cat config.txt"],
+              "hint": "cat followed by the filename.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>hostname=localhost\nport=8080\ndebug=true</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: cat config.txt prints the file's contents.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.2",
+          "title": "First & last lines — head, tail",
+          "command": "head, tail",
+          "description": "Preview the top or bottom of a file; follow live logs with tail -f",
+          "xp_total": 65,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "head and tail",
+              "text": "<cmd>head file.txt</cmd> — shows the first 10 lines (default)\n<cmd>head -n 5 file.txt</cmd> — shows only the first 5 lines\n\n<cmd>tail file.txt</cmd> — shows the last 10 lines\n<cmd>tail -n 3 file.txt</cmd> — shows the last 3 lines\n<cmd>tail -f logfile</cmd> — <hl>follows</hl> the file in real time (great for watching logs live). Press Ctrl+C to stop.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "head -n 3 server.log", "output": "[INFO] Server started\n[INFO] Listening on port 8080\n[INFO] Database connected" },
+                { "prompt": "user@linux:~$", "cmd": "tail -n 2 server.log", "output": "[ERROR] Timeout after 30s\n[INFO] Retrying connection..." },
+                { "prompt": "user@linux:~$", "cmd": "tail -f server.log", "output": "[INFO] New request from 192.168.1.1\n[INFO] Response sent in 12ms\n(following...)" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To see the first 5 lines of a file: ", {"blank": 0}, " -n 5 file.txt"],
+              "words": ["head", "tail", "cat", "top"],
+              "correct": ["head"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! head shows lines from the top of the file.",
+                "bad": "head reads from the top of the file. tail reads from the bottom."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Live log watching",
+              "sentence": ["To watch a log file update in real time: tail ", {"blank": 0}, " app.log"],
+              "words": ["-f", "-n", "-r", "-l"],
+              "correct": ["-f"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -f means follow — tail -f stays open and prints new lines as they're written.",
+                "bad": "-f makes tail follow the file, printing new lines as they arrive. Essential for watching live logs."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "head or tail?",
+              "question": "You want to see the most recent 10 entries in a log file. Which command is most useful?",
+              "options": ["head -n 10 app.log", "cat app.log", "tail -n 10 app.log", "tail -f app.log"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! tail -n 10 shows the last 10 lines — the most recent entries.",
+                "bad": "tail reads from the bottom (most recent). tail -n 10 gives you the last 10 lines."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Show the last 20 lines of a file called error.log",
+              "placeholder": "type your command here...",
+              "expected": ["tail -n 20 error.log", "tail -20 error.log"],
+              "hint": "Use tail with -n to specify the number of lines.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct! Showing last 20 lines.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: tail -n 20 error.log shows the last 20 lines.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.3",
+          "title": "Scrolling through files — less",
+          "command": "less",
+          "description": "Read large files page by page with keyboard navigation",
+          "xp_total": 40,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The less command",
+              "text": "<cmd>less file.txt</cmd> opens the file in a scrollable viewer — it doesn't dump everything at once.\n\nKeyboard controls inside less:\n<cmd>Space</cmd> or <cmd>f</cmd> — next page\n<cmd>b</cmd> — previous page\n<cmd>g</cmd> — go to beginning\n<cmd>G</cmd> — go to end\n<cmd>/searchterm</cmd> — search forward\n<cmd>n</cmd> — jump to next search match\n<cmd>q</cmd> — quit\n\nless is smarter than more — it lets you scroll both ways and search.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "less large_file.txt", "output": "(opens file in scrollable viewer)\n(press q to quit, /term to search)" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Keyboard shortcut",
+              "question": "You are inside less reading a file. How do you quit?",
+              "options": ["Ctrl+C", "Escape", "q", "x"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! q quits less and returns you to the terminal.",
+                "bad": "Press q to quit less. This is the standard quit key in most Linux file viewers."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Searching in less",
+              "question": "You're reading a file in less and want to find the word 'error'. What do you type?",
+              "options": ["find error", "grep error", "/error", "search error"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! /searchterm searches forward in less. Press n to jump to the next match.",
+                "bad": "Inside less, type /error to search. Press n to go to the next match."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Open the file server.log in the less viewer.",
+              "placeholder": "type your command here...",
+              "expected": ["less server.log"],
+              "hint": "less followed by the filename.",
+              "xp": 10,
+              "output": {
+                "ok": "<success>✓ Correct! server.log opens in less. (Press q to quit)</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: less server.log opens the file in a scrollable viewer.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.4",
+          "title": "Counting content — wc",
+          "command": "wc",
+          "description": "Count lines, words, and characters in a file",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The wc command",
+              "text": "<cmd>wc</cmd> stands for <hl>word count</hl>. It counts lines, words, and bytes in a file.\n\n<cmd>wc file.txt</cmd> — shows lines, words, bytes\n<cmd>wc -l file.txt</cmd> — count lines only\n<cmd>wc -w file.txt</cmd> — count words only\n<cmd>wc -c file.txt</cmd> — count bytes/characters\n\nVery useful in pipelines: <cmd>ls | wc -l</cmd> counts how many files are in a directory.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "wc notes.txt", "output": "  3  12  64 notes.txt" },
+                { "prompt": "user@linux:~$", "cmd": "wc -l notes.txt", "output": "3 notes.txt" },
+                { "prompt": "user@linux:~$", "cmd": "ls | wc -l", "output": "8" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": ["To count only the number of lines in a file: wc ", {"blank": 0}, " file.txt"],
+              "words": ["-l", "-w", "-c", "-n"],
+              "correct": ["-l"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! wc -l counts lines. -w counts words, -c counts characters.",
+                "bad": "-l counts lines. Remember: l=lines, w=words, c=characters."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Reading wc output",
+              "question": "wc report.txt outputs: 42  318  1840 report.txt. What does 42 represent?",
+              "options": ["Number of words", "Number of characters", "Number of lines", "File size in KB"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! wc output order is: lines, words, bytes (characters).",
+                "bad": "wc output is always: lines words bytes. So 42 = lines, 318 = words, 1840 = bytes."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Count how many lines are in a file called data.csv",
+              "placeholder": "type your command here...",
+              "expected": ["wc -l data.csv"],
+              "hint": "Use wc with the -l flag for line count.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>1024 data.csv</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: wc -l data.csv counts the number of lines.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.5",
+          "title": "Editing files — nano",
+          "command": "nano",
+          "description": "Create and edit text files directly in the terminal",
+          "xp_total": 45,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The nano editor",
+              "text": "<cmd>nano filename</cmd> opens a beginner-friendly text editor right in the terminal.\n\nKey shortcuts (shown at the bottom of nano):\n<cmd>Ctrl+O</cmd> — save (write Out)\n<cmd>Ctrl+X</cmd> — exit\n<cmd>Ctrl+W</cmd> — search (Where is)\n<cmd>Ctrl+K</cmd> — cut a line\n<cmd>Ctrl+U</cmd> — paste\n\nThe ^ symbol in nano means Ctrl. So ^X = Ctrl+X.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "nano hello.txt", "output": "(nano opens — you can type freely)\n(Ctrl+O to save, Ctrl+X to exit)" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Nano shortcuts",
+              "question": "In nano, what does Ctrl+O do?",
+              "options": ["Opens a new file", "Quits nano", "Saves the file", "Searches for text"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Ctrl+O saves (writes Out) the current file.",
+                "bad": "Ctrl+O saves the file. Ctrl+X exits. Ctrl+W searches. Ctrl+O = write Out."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "The ^ symbol",
+              "question": "Nano shows ^X at the bottom. What key combination does this mean?",
+              "options": ["Shift+X", "Alt+X", "Ctrl+X", "Tab+X"],
+              "correct": 2,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! In Linux documentation, ^ always means Ctrl.",
+                "bad": "In Linux, ^ = Ctrl. So ^X = Ctrl+X, which exits nano."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Open a file called shopping.txt in the nano editor.",
+              "placeholder": "type your command here...",
+              "expected": ["nano shopping.txt"],
+              "hint": "nano followed by the filename.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct! nano shopping.txt opens the file for editing.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: nano shopping.txt opens or creates the file in the nano editor.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.6",
+          "title": "Writing to files — redirection",
+          "command": ">, >>",
+          "description": "Save command output to files; overwrite vs append",
+          "xp_total": 75,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Output redirection",
+              "text": "By default, commands print to the terminal. You can <hl>redirect</hl> output into a file instead.\n\n<cmd>command > file.txt</cmd> — writes output to file (<hl>overwrites</hl> if it exists)\n<cmd>command >> file.txt</cmd> — <hl>appends</hl> output to file (adds to the end)\n\nExamples:\n<cmd>echo \"hello\" > greet.txt</cmd> — creates greet.txt with 'hello'\n<cmd>ls >> inventory.txt</cmd> — appends directory listing to inventory.txt\n<cmd>date >> log.txt</cmd> — logs current date to a file",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "echo 'First line' > file.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "cat file.txt", "output": "First line" },
+                { "prompt": "user@linux:~$", "cmd": "echo 'Second line' >> file.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "cat file.txt", "output": "First line\nSecond line" },
+                { "prompt": "user@linux:~$", "cmd": "echo 'Replaced!' > file.txt", "output": "" },
+                { "prompt": "user@linux:~$", "cmd": "cat file.txt", "output": "Replaced!" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Overwrite or append?",
+              "sentence": ["To ADD output to the end of a file without erasing it, use: echo 'text' ", {"blank": 0}, " file.txt"],
+              "words": [">>", ">", "|", "<"],
+              "correct": [">>"],
+              "xp": 20,
+              "feedback": {
+                "ok": "Correct! >> appends. > overwrites. Easy to remember: >> is like 'adding more'.",
+                "bad": ">> appends to the end. > overwrites. Always double-check which one you mean!"
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Save command output",
+              "sentence": ["Save the output of ls into a file called filelist.txt: ls ", {"blank": 0}, " filelist.txt"],
+              "words": [">", ">>", "|", "->"],
+              "correct": [">"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! > redirects command output into a file.",
+                "bad": "> redirects (overwrites). Use >> if you want to append instead."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Overwrite warning",
+              "question": "You have a file secrets.txt with important data. You accidentally run: echo 'oops' > secrets.txt. What happened?",
+              "options": [
+                "secrets.txt now contains 'oops' — original data is gone",
+                "An error is shown — you can't overwrite existing files",
+                "secrets.txt now has 'oops' appended to the end",
+                "Linux creates a backup before overwriting"
+              ],
+              "correct": 0,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! > overwrites without warning. The original content is gone permanently.",
+                "bad": "> silently overwrites. There is no warning or backup. This is a common and painful mistake."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Arrange these to append today's date to a file called diary.txt:",
+              "tokens": ["diary.txt", ">>", "date"],
+              "correct_order": ["date", ">>", "diary.txt"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Command first, then redirection operator, then filename.",
+                "bad": "Order: command >> filename — date >> diary.txt"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Write the text 'LinuxPath progress' into a new file called progress.txt",
+              "placeholder": "type your command here...",
+              "expected": ["echo 'LinuxPath progress' > progress.txt", "echo \"LinuxPath progress\" > progress.txt", "echo LinuxPath progress > progress.txt"],
+              "hint": "Use echo with > to redirect into a file.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct! progress.txt created with your text.</success>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: echo 'your text' > filename.txt writes text to a file.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "2.7",
+          "title": "Section 2 review",
+          "command": "mixed",
+          "description": "Reinforce reading and writing commands with mixed exercises",
+          "xp_total": 80,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review — cat vs less",
+              "question": "Which command is better for reading a 10,000-line file?",
+              "options": ["cat bigfile.txt", "less bigfile.txt", "head bigfile.txt", "echo bigfile.txt"],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! less lets you scroll without flooding the terminal.",
+                "bad": "less is better for large files — it shows one page at a time and lets you scroll."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — tail follow",
+              "sentence": ["To watch a log file update live in real time: tail ", {"blank": 0}, " app.log"],
+              "words": ["-f", "-n", "-l", "-r"],
+              "correct": ["-f"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! tail -f follows the file and shows new lines as they're written.",
+                "bad": "-f makes tail follow the file in real time."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — word count",
+              "sentence": ["To count the number of words in essay.txt: wc ", {"blank": 0}, " essay.txt"],
+              "words": ["-w", "-l", "-c", "-n"],
+              "correct": ["-w"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! wc -w counts words.",
+                "bad": "wc -w counts words. -l counts lines. -c counts characters."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review — reorder",
+              "instruction": "Arrange to save the output of date into a file called now.txt:",
+              "tokens": ["now.txt", ">", "date"],
+              "correct_order": ["date", ">", "now.txt"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! date > now.txt saves the current date into now.txt.",
+                "bad": "Command > filename: date > now.txt"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review — append",
+              "question": "What is the difference between > and >> in redirection?",
+              "options": [
+                "> appends, >> overwrites",
+                "> overwrites, >> appends",
+                "Both do the same thing",
+                "> is for text files, >> is for binary files"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! > overwrites, >> appends. Never mix these up on important files!",
+                "bad": "> overwrites the file (danger!). >> appends to the end (safe). Always double-check."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "Show the last 5 lines of a file called access.log",
+              "placeholder": "type your command here...",
+              "expected": ["tail -n 5 access.log", "tail -5 access.log"],
+              "hint": "tail with -n flag.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>192.168.1.1 - GET /index.html 200\n192.168.1.2 - POST /login 401\n...</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: tail -n 5 access.log shows the last 5 lines.</info>"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "Print the first 3 lines of a file called config.yml",
+              "placeholder": "type your command here...",
+              "expected": ["head -n 3 config.yml", "head -3 config.yml"],
+              "hint": "head with -n flag.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>version: '3.8'\nservices:\n  web:</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: head -n 3 config.yml shows the first 3 lines.</info>"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Searching & filtering",
+      "subtitle": "Find files and content fast",
+      "difficulty": "intermediate",
+      "color": "amber",
+      "lessons": [
+        {
+          "id": "3.1",
+          "title": "Searching text — grep",
+          "command": "grep",
+          "description": "Search for patterns inside files with powerful flags",
+          "xp_total": 80,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The grep command",
+              "text": "<cmd>grep</cmd> searches for text patterns inside files. It prints every line that matches.\n\n<cmd>grep 'word' file.txt</cmd> — find lines containing 'word'\n<cmd>grep -i 'word' file.txt</cmd> — case-insensitive search\n<cmd>grep -r 'word' folder/</cmd> — search recursively through all files in a folder\n<cmd>grep -n 'word' file.txt</cmd> — show line numbers\n<cmd>grep -v 'word' file.txt</cmd> — show lines that do NOT match (invert)\n<cmd>grep -c 'word' file.txt</cmd> — count matching lines",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "grep 'error' server.log", "output": "[ERROR] Connection refused at 09:14\n[ERROR] Timeout after 30s at 09:22" },
+                { "prompt": "user@linux:~$", "cmd": "grep -i 'error' server.log", "output": "[ERROR] Connection refused at 09:14\n[error] retrying...\n[ERROR] Timeout after 30s at 09:22" },
+                { "prompt": "user@linux:~$", "cmd": "grep -n 'error' server.log", "output": "3:[ERROR] Connection refused at 09:14\n7:[ERROR] Timeout after 30s at 09:22" },
+                { "prompt": "user@linux:~$", "cmd": "grep -c 'error' server.log", "output": "2" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Case-insensitive search",
+              "sentence": ["To search for 'warning' ignoring uppercase/lowercase: grep ", {"blank": 0}, " 'warning' file.txt"],
+              "words": ["-i", "-r", "-v", "-n"],
+              "correct": ["-i"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -i makes grep ignore case — it matches WARNING, Warning, warning etc.",
+                "bad": "-i means case-insensitive. It will match 'warning', 'WARNING', 'Warning' all at once."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Recursive search",
+              "sentence": ["To search for 'TODO' in all files inside a folder: grep ", {"blank": 0}, " 'TODO' src/"],
+              "words": ["-r", "-i", "-n", "-f"],
+              "correct": ["-r"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -r searches recursively through every file in the folder.",
+                "bad": "-r (recursive) tells grep to search through all files inside the folder and its subfolders."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Invert match",
+              "question": "You want to see all lines in a file that do NOT contain the word 'debug'. Which flag do you use?",
+              "options": ["grep -n", "grep -v", "grep -i", "grep -r"],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -v inverts the match — shows lines that don't contain the pattern.",
+                "bad": "-v inverts grep: it shows every line that does NOT match the pattern."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Arrange to recursively search for 'password' in all files in the config/ folder:",
+              "tokens": ["config/", "-r", "'password'", "grep"],
+              "correct_order": ["grep", "-r", "'password'", "config/"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! grep -r 'pattern' folder/ searches all files recursively.",
+                "bad": "grep goes first, then flags, then pattern in quotes, then the folder: grep -r 'password' config/"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Search for the word 'failed' (case-insensitive) with line numbers in auth.log",
+              "placeholder": "type your command here...",
+              "expected": ["grep -in 'failed' auth.log", "grep -ni 'failed' auth.log", "grep -i -n 'failed' auth.log", "grep -n -i 'failed' auth.log"],
+              "hint": "Combine -i (case-insensitive) and -n (line numbers) flags.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>✓ Correct! Searching case-insensitively with line numbers.</success>\n<info>12:Failed password for user admin\n47:FAILED login attempt from 10.0.0.5</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: grep -in 'failed' auth.log combines -i and -n flags.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3.2",
+          "title": "Finding files — find",
+          "command": "find",
+          "description": "Locate files and directories by name, type, size, and date",
+          "xp_total": 80,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The find command",
+              "text": "<cmd>find</cmd> searches the filesystem for files matching criteria.\n\n<cmd>find . -name 'file.txt'</cmd> — find by exact name in current dir\n<cmd>find . -name '*.log'</cmd> — find all .log files (wildcards work)\n<cmd>find . -type d</cmd> — find directories only (-type f for files)\n<cmd>find . -size +1M</cmd> — find files larger than 1MB\n<cmd>find . -mtime -7</cmd> — find files modified in the last 7 days\n\nThe first argument is <hl>where to search</hl>. Use <hl>.</hl> for current directory.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "find . -name '*.txt'", "output": "./notes.txt\n./Documents/report.txt\n./Documents/todo.txt" },
+                { "prompt": "user@linux:~$", "cmd": "find /var/log -name '*.log' -type f", "output": "/var/log/syslog\n/var/log/auth.log\n/var/log/kern.log" },
+                { "prompt": "user@linux:~$", "cmd": "find . -size +10M", "output": "./Downloads/ubuntu.iso\n./Videos/demo.mp4" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Find by type",
+              "sentence": ["To find only directories (not files) under /home: find /home -type ", {"blank": 0}],
+              "words": ["d", "f", "l", "x"],
+              "correct": ["d"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -type d finds directories, -type f finds regular files, -type l finds symlinks.",
+                "bad": "-type d finds directories. -type f finds regular files."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Find by name pattern",
+              "sentence": ["To find all Python files recursively from current dir: find . -name ", {"blank": 0}],
+              "words": ["'*.py'", "'*.python'", "python", ".py"],
+              "correct": ["'*.py'"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! *.py uses a wildcard to match any file ending in .py.",
+                "bad": "Use '*.py' with quotes and a wildcard — quotes prevent the shell from expanding * too early."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Find recently modified",
+              "question": "You want to find files modified within the last 3 days. Which option do you use?",
+              "options": ["find . -age -3", "find . -mtime -3", "find . -date 3", "find . -modified 3"],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -mtime -3 means 'modified time less than 3 days ago'.",
+                "bad": "-mtime -3 finds files modified within the last 3 days. Negative means within, positive means older than."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Find all .log files in /var/log:",
+              "tokens": ["-name", "find", "'*.log'", "/var/log"],
+              "correct_order": ["find", "/var/log", "-name", "'*.log'"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! find [where] [criteria] — path comes before the -name flag.",
+                "bad": "find needs: find [search location] [options]. So: find /var/log -name '*.log'"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Find all files larger than 100MB in the current directory.",
+              "placeholder": "type your command here...",
+              "expected": ["find . -size +100M", "find . -size +100m"],
+              "hint": "Use find with -size and the + prefix for 'larger than'.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>./Downloads/movie.mkv\n./backup.tar.gz</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: find . -size +100M finds files over 100 megabytes.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3.3",
+          "title": "Finding programs — which, whereis",
+          "command": "which, whereis, locate",
+          "description": "Quickly find where commands and programs are installed",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Locating commands",
+              "text": "<cmd>which command</cmd> — shows the full path of a command you'd run\n<cmd>whereis command</cmd> — finds the binary, source, and manual page locations\n<cmd>locate filename</cmd> — fast filename search using a pre-built database (run <cmd>sudo updatedb</cmd> to refresh)\n\nQuick comparison:\n<hl>which</hl> — where is the executable I'd run?\n<hl>whereis</hl> — where is everything related to this program?\n<hl>locate</hl> — where is any file by name? (fastest, but can be outdated)",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "which python3", "output": "/usr/bin/python3" },
+                { "prompt": "user@linux:~$", "cmd": "whereis python3", "output": "python3: /usr/bin/python3 /usr/lib/python3 /usr/share/man/man1/python3.1.gz" },
+                { "prompt": "user@linux:~$", "cmd": "locate notes.txt", "output": "/home/user/notes.txt\n/home/user/Documents/notes.txt" }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "which vs whereis",
+              "question": "You want to know exactly which version of Python will run when you type python3. Which command tells you this?",
+              "options": ["whereis python3", "which python3", "locate python3", "find python3"],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! which shows the exact executable path that would run.",
+                "bad": "which shows the executable that would run when you type the command. It's the fastest way to check which version is active."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "locate speed",
+              "question": "Why is locate faster than find for searching files by name?",
+              "options": [
+                "locate uses more CPU cores",
+                "locate searches a pre-built index database, not live filesystem",
+                "locate only searches your home folder",
+                "locate skips hidden files"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! locate reads from a database (updatedb builds it). find scans the actual filesystem in real time.",
+                "bad": "locate queries a pre-built index database, which is much faster than find scanning every file live."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Find out where the 'git' executable is located on your system.",
+              "placeholder": "type your command here...",
+              "expected": ["which git"],
+              "hint": "Use which to find where a command lives.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>/usr/bin/git</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: which git shows the path of the git executable.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3.4",
+          "title": "Sorting & deduplication — sort, uniq",
+          "command": "sort, uniq",
+          "description": "Sort lines alphabetically or numerically; remove or count duplicates",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "sort and uniq",
+              "text": "<cmd>sort file.txt</cmd> — sort lines alphabetically\n<cmd>sort -n file.txt</cmd> — sort numerically\n<cmd>sort -r file.txt</cmd> — reverse sort\n<cmd>sort -u file.txt</cmd> — sort and remove duplicates\n\n<cmd>uniq file.txt</cmd> — remove consecutive duplicate lines (file must be sorted first)\n<cmd>uniq -c file.txt</cmd> — count how many times each line appears\n<cmd>uniq -d file.txt</cmd> — show only duplicate lines\n\nClassic combo: <cmd>sort file.txt | uniq -c | sort -rn</cmd>",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "sort fruits.txt", "output": "apple\nbanana\ncherry\ndate" },
+                { "prompt": "user@linux:~$", "cmd": "sort -r fruits.txt", "output": "date\ncherry\nbanana\napple" },
+                { "prompt": "user@linux:~$", "cmd": "sort names.txt | uniq -c", "output": "      3 alice\n      1 bob\n      2 carol" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Numeric sort",
+              "sentence": ["To sort a file by number instead of alphabetically: sort ", {"blank": 0}, " numbers.txt"],
+              "words": ["-n", "-r", "-u", "-f"],
+              "correct": ["-n"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Without -n, sort would order 10 before 2 (alphabetically). -n sorts properly by value.",
+                "bad": "-n sorts numerically. Without it, 10 comes before 2 alphabetically which is rarely what you want."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "uniq -c",
+              "question": "What does sort names.txt | uniq -c output?",
+              "options": [
+                "Names sorted alphabetically with no duplicates",
+                "Each unique name with a count of how many times it appears",
+                "Only names that appear more than once",
+                "Names in random order"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! uniq -c prefixes each line with the count of consecutive occurrences.",
+                "bad": "uniq -c counts how many times each line appears. Combined with sort first, it's a frequency counter."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Sort the file cities.txt and remove duplicate entries.",
+              "placeholder": "type your command here...",
+              "expected": ["sort -u cities.txt", "sort cities.txt | uniq"],
+              "hint": "Either sort -u or pipe sort into uniq.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct! Sorted with duplicates removed.</success>\n<info>Amsterdam\nBerlin\nChennai\nDelhi\nParis</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: sort -u cities.txt sorts and removes duplicates in one go.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3.5",
+          "title": "Chaining commands — pipes",
+          "command": "|",
+          "description": "Connect commands together so the output of one feeds into the next",
+          "xp_total": 85,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "The pipe operator",
+              "text": "The <hl>pipe</hl> <cmd>|</cmd> connects commands — the output of the left command becomes the input of the right command.\n\nThis is the Unix philosophy: small tools, chained together.\n\n<cmd>ls | wc -l</cmd> — count files in current directory\n<cmd>cat file.txt | grep 'error'</cmd> — find errors in a file\n<cmd>ps aux | grep 'python'</cmd> — find running python processes\n<cmd>cat access.log | sort | uniq -c | sort -rn</cmd> — count unique visitors\n\nYou can chain as many commands as you need.",
+              "terminal": [
+                { "prompt": "user@linux:~$", "cmd": "ls | wc -l", "output": "14" },
+                { "prompt": "user@linux:~$", "cmd": "cat server.log | grep 'ERROR' | wc -l", "output": "7" },
+                { "prompt": "user@linux:~$", "cmd": "cat access.log | sort | uniq -c | sort -rn | head -5", "output": "     45 192.168.1.1\n     32 10.0.0.5\n     18 172.16.0.2\n     12 192.168.1.10\n      8 10.0.0.8" }
+              ]
+            },
+            {
+              "type": "fill",
+              "label": "Count with pipes",
+              "sentence": ["To count how many files are in the current directory: ls ", {"blank": 0}, " wc -l"],
+              "words": ["|", ">", ">>", "&"],
+              "correct": ["|"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! | pipes ls output into wc -l which counts the lines.",
+                "bad": "| (pipe) sends the output of ls directly into wc -l for counting."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Filter with pipes",
+              "sentence": ["To search for 'root' in the output of ps aux: ps aux ", {"blank": 0}, " grep 'root'"],
+              "words": ["|", ">", ">>", "<"],
+              "correct": ["|"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! ps aux | grep 'root' filters the process list to show only root processes.",
+                "bad": "| passes ps output to grep for filtering."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Pipe vs redirect",
+              "question": "What is the key difference between | (pipe) and > (redirect)?",
+              "options": [
+                "| sends output to a file, > sends it to a command",
+                "| sends output to another command, > sends it to a file",
+                "They do the same thing",
+                "| only works with grep, > works with all commands"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! | connects commands to commands. > connects a command to a file.",
+                "bad": "| sends output to another command. > saves output to a file. They're complementary tools."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the pipeline",
+              "instruction": "Find how many .py files are in the current directory recursively:",
+              "tokens": ["wc -l", "|", "find . -name '*.py'"],
+              "correct_order": ["find . -name '*.py'", "|", "wc -l"],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! find produces the list, | pipes it to wc -l for counting.",
+                "bad": "find . -name '*.py' | wc -l — find produces the list, then wc counts the lines."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Find all lines containing 'warning' in app.log and count them.",
+              "placeholder": "type your command here...",
+              "expected": ["grep 'warning' app.log | wc -l", "grep -i 'warning' app.log | wc -l", "cat app.log | grep 'warning' | wc -l"],
+              "hint": "Pipe grep into wc -l to count the matching lines.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>✓ Correct! Pipeline working perfectly.</success>\n<info>23</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: grep 'warning' app.log | wc -l — grep filters, then wc counts.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "3.6",
+          "title": "Section 3 review",
+          "command": "mixed",
+          "description": "Reinforce searching, finding, and piping with mixed exercises",
+          "xp_total": 80,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review — grep flags",
+              "question": "Which grep flag shows only the COUNT of matching lines rather than the lines themselves?",
+              "options": ["-n", "-v", "-c", "-i"],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! grep -c counts matches instead of printing them.",
+                "bad": "grep -c counts the number of matching lines. -n shows line numbers, -v inverts, -i ignores case."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — find by size",
+              "sentence": ["To find files larger than 500MB: find . -size ", {"blank": 0}, "500M"],
+              "words": ["+", "-", "=", ">"],
+              "correct": ["+"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! + means 'greater than' in find -size. - means 'less than'.",
+                "bad": "+ means greater than. find . -size +500M finds files over 500MB."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review — pipe",
+              "sentence": ["To list only .txt files in /docs and count them: find /docs -name '*.txt' ", {"blank": 0}, " wc -l"],
+              "words": ["|", ">", ">>", ";"],
+              "correct": ["|"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Pipe the find output into wc -l for counting.",
+                "bad": "| pipes the output of find into wc to count the results."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review — reorder",
+              "instruction": "Search case-insensitively for 'root' in /etc/passwd with line numbers:",
+              "tokens": ["-in", "grep", "'/etc/passwd'", "'root'"],
+              "correct_order": ["grep", "-in", "'root'", "'/etc/passwd'"],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! grep -in 'root' /etc/passwd",
+                "bad": "grep [flags] [pattern] [file]: grep -in 'root' '/etc/passwd'"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review — sort",
+              "question": "Why should you always sort a file before piping it to uniq?",
+              "options": [
+                "sort makes uniq run faster",
+                "uniq only removes consecutive duplicates — sort brings duplicates together",
+                "sort is required by uniq syntax",
+                "uniq doesn't work without sort"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! uniq only removes lines that are next to each other. Sort first so all duplicates are adjacent.",
+                "bad": "uniq only removes consecutive duplicates. If identical lines are scattered, sort must bring them together first."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "Find all files modified in the last 7 days in the current directory.",
+              "placeholder": "type your command here...",
+              "expected": ["find . -mtime -7"],
+              "hint": "Use find with -mtime and a negative number.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct!</success>\n<info>./notes.txt\n./scripts/backup.sh\n./Documents/report.pdf</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: find . -mtime -7 finds files modified within the last 7 days.</info>"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Review — write it",
+              "prompt": "Show all running processes and filter to show only those containing 'node'.",
+              "placeholder": "type your command here...",
+              "expected": ["ps aux | grep node", "ps aux | grep 'node'"],
+              "hint": "Pipe ps aux into grep.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>✓ Correct! Pipeline working.</success>\n<info>user  1234  0.5  2.1  node server.js\nuser  1235  0.1  1.8  node worker.js</info>",
+                "bad": "<error>✗ Not quite.</error>\n<info>Hint: ps aux | grep node — pipe process list into grep to filter.</info>"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
