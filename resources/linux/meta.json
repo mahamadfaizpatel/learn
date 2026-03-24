@@ -1,12 +1,18 @@
 {
   "id": "linux",
   "title": "Linux Fundamentals",
-  "description": "Master the terminal from scratch — navigation, files, permissions, search, and more.",
+  "description": "Master the terminal from scratch — navigation, files, permissions, processes, networking and more.",
   "icon": "🐧",
   "accent": "#00d084",
   "difficulty": "beginner",
-  "sections_count": 3,
-  "files": ["curriculum.json"],
-  "complete_message": "Sections 1–3 complete!",
-  "complete_sub": "You've mastered the terminal, file operations, and searching. Sections 4–7 coming soon."
+  "sections_count": 7,
+  "files": [
+    "curriculum.json",
+    "s4_permissions.json",
+    "s5_processes.json",
+    "s6_shell.json",
+    "s7_networking.json"
+  ],
+  "complete_message": "Sections 1–7 complete!",
+  "complete_sub": "You've mastered the terminal, files, permissions, processes, the shell environment, and networking — that's the full practical Linux toolkit. Sections 8–10 (scripting, packages, sysadmin) coming soon."
 }
