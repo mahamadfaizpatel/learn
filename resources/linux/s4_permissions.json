@@ -1,0 +1,750 @@
+{
+  "sections": [
+    {
+      "id": "4",
+      "title": "Permissions & ownership",
+      "subtitle": "Control who can read, write, and run every file",
+      "difficulty": "intermediate",
+      "color": "#f5a623",
+      "lessons": [
+        {
+          "id": "4.1",
+          "title": "How Linux permissions work",
+          "command": "ls -l",
+          "description": "Understand the three permission types and who they apply to",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Read, write, execute",
+              "text": "Every file and directory in Linux has three permission types:\n\n<hl>r</hl> \u2014 read: view the file's contents\n<hl>w</hl> \u2014 write: modify or delete the file\n<hl>x</hl> \u2014 execute: run the file as a program\n\nThese apply to three groups of people:\n<hl>u</hl> \u2014 user (the file's owner)\n<hl>g</hl> \u2014 group (members of the file's group)\n<hl>o</hl> \u2014 others (everyone else)\n\nRun <cmd>ls -l</cmd> to see permissions on every file.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l notes.txt",
+                  "output": "-rw-r--r-- 1 user staff 1024 Mar 10 09:00 notes.txt"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "In the string -rw-r--r--, what permissions does the file owner have?",
+              "options": [
+                "Read only",
+                "Read and write",
+                "Read, write, and execute",
+                "Write only"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! rw- means read and write. The dash means no execute permission.",
+                "bad": "Look at positions 2-4: r=read, w=write, -=no execute. So the owner has read and write only."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "The permission string has 10 characters. The first character shows the ",
+                {
+                  "blank": 0
+                },
+                " type, then three groups of three characters follow."
+              ],
+              "words": [
+                "file",
+                "owner",
+                "group",
+                "mode"
+              ],
+              "correct": [
+                "file"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! The first character is the file type: - for regular file, d for directory, l for symlink.",
+                "bad": "The first character is the file type: dash for regular file, d for directory, l for symlink."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Reading permissions",
+              "question": "A file shows drwxr-x---. What does the leading 'd' mean?",
+              "options": [
+                "The file is deleted",
+                "It is a directory",
+                "It is a device file",
+                "It is a symlink"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! d means it's a directory. A regular file shows - instead.",
+                "bad": "The first character is the file type. d means directory, - means regular file, l means symlink."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "List the files in the current directory with their permission details.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ls -l",
+                "ls -la",
+                "ls -al"
+              ],
+              "hint": "Use ls with the -l flag (long format) to see permissions.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>total 32\n-rw-r--r-- 1 user staff  420 Mar 10 notes.txt\n-rwxr-xr-x 1 user staff 1024 Mar 10 script.sh\ndrwxr-xr-x 2 user staff   64 Mar 10 projects/</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Hint: ls -l shows files in long format, revealing permissions, owner, size, and date.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.2",
+          "title": "Changing permissions \u2014 chmod",
+          "command": "chmod",
+          "description": "Use symbolic notation to grant and revoke permissions",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "chmod with symbols",
+              "text": "<hl>chmod</hl> changes file permissions. The symbolic format is:\n\n<cmd>chmod [who][+/-/=][permission] file</cmd>\n\n<hl>who</hl>: u (user/owner), g (group), o (others), a (all)\n<hl>+</hl> adds, <hl>-</hl> removes, <hl>=</hl> sets exactly\n\nExamples:\n<cmd>chmod u+x script.sh</cmd>   \u2014 give owner execute\n<cmd>chmod go-w file.txt</cmd>   \u2014 remove write from group & others\n<cmd>chmod a+r readme.txt</cmd>  \u2014 give everyone read",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "chmod u+x script.sh",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l script.sh",
+                  "output": "-rwxr--r-- 1 user staff 512 Mar 10 script.sh"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does chmod go-w data.csv do?",
+              "options": [
+                "Give group and others write permission",
+                "Remove write permission from group and others",
+                "Remove write permission from the owner only",
+                "Give write permission to the owner"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! go means group and others, - removes, w is write.",
+                "bad": "Break it down: go = group and others, - = remove, w = write permission."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Make a shell script executable by its owner only:",
+              "tokens": [
+                "u+x",
+                "chmod",
+                "deploy.sh"
+              ],
+              "correct_order": [
+                "chmod",
+                "u+x",
+                "deploy.sh"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! chmod first, then the permission change, then the target file.",
+                "bad": "Order: command (chmod) \u2192 permission change (u+x) \u2192 target file (deploy.sh)."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To remove execute permission from everyone, you would run: chmod ",
+                {
+                  "blank": 0
+                },
+                "-x file"
+              ],
+              "words": [
+                "a",
+                "u",
+                "o",
+                "g"
+              ],
+              "correct": [
+                "a"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! a means all (user, group, and others). chmod a-x removes execute from everyone.",
+                "bad": "a stands for 'all' \u2014 it targets user, group, and others simultaneously."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Remove read and write permission from 'others' on the file secret.txt.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "chmod o-rw secret.txt",
+                "chmod o-wr secret.txt"
+              ],
+              "hint": "Use chmod, o for others, - to remove, then rw for read and write.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct! secret.txt is now private to owner and group.</success>\n<info>-rw-r----- 1 user staff 256 Mar 10 secret.txt</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: chmod o-rw secret.txt\no = others, - = remove, rw = read+write</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.3",
+          "title": "Octal permissions",
+          "command": "chmod 755",
+          "description": "Use three-digit numbers to set permissions precisely",
+          "xp_total": 65,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Octal notation",
+              "text": "Instead of symbols, you can use a 3-digit number with <cmd>chmod</cmd>.\n\nEach digit represents user, group, others \u2014 and is the sum of:\n<hl>4</hl> = read\n<hl>2</hl> = write\n<hl>1</hl> = execute\n\nSo <hl>7</hl> = 4+2+1 = rwx (full access)\n<hl>5</hl> = 4+0+1 = r-x (read & execute)\n<hl>4</hl> = 4+0+0 = r-- (read only)\n<hl>6</hl> = 4+2+0 = rw- (read & write)\n\nCommon patterns:\n<cmd>chmod 755 script.sh</cmd>  \u2014 owner: rwx, group: r-x, others: r-x\n<cmd>chmod 644 readme.txt</cmd> \u2014 owner: rw-, group: r--, others: r--",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "chmod 755 script.sh",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l script.sh",
+                  "output": "-rwxr-xr-x 1 user staff 512 Mar 10 script.sh"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Calculate octal",
+              "question": "What octal value gives read+write permissions (and nothing else)?",
+              "options": [
+                "7",
+                "6",
+                "5",
+                "4"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! 4 (read) + 2 (write) + 0 (no execute) = 6.",
+                "bad": "Add up: read=4, write=2, execute=1. Read+write only = 4+2 = 6."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Decode octal",
+              "question": "What permissions does chmod 644 give the file owner?",
+              "options": [
+                "Read only",
+                "Read, write, and execute",
+                "Read and write",
+                "Write only"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! The first digit 6 = 4+2 = read + write for the owner.",
+                "bad": "The first digit is for the owner. 6 = 4+2 = read + write. No execute."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "A file with permissions rwxr-xr-x in octal notation is ",
+                {
+                  "blank": 0
+                },
+                "."
+              ],
+              "words": [
+                "755",
+                "644",
+                "777",
+                "700"
+              ],
+              "correct": [
+                "755"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! rwx=7, r-x=5, r-x=5 \u2192 755.",
+                "bad": "Calculate each group: rwx = 4+2+1 = 7, r-x = 4+0+1 = 5, r-x = 5. Total: 755."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Set app.py so the owner can read, write and execute; group can read and execute; others can only read.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "chmod 754 app.py"
+              ],
+              "hint": "Owner: rwx=7, Group: r-x=5, Others: r--=4. Put them together: 754.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>-rwxr-xr-- 1 user staff 2048 Mar 10 app.py</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Owner rwx=7, Group r-x=5, Others r--=4 \u2192 chmod 754 app.py</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.4",
+          "title": "Ownership \u2014 chown & chgrp",
+          "command": "chown, chgrp",
+          "description": "Change who owns a file and which group it belongs to",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "chown and chgrp",
+              "text": "Every file has an <hl>owner</hl> (a user) and a <hl>group</hl>.\n\n<cmd>chown user file</cmd>        \u2014 change the owner\n<cmd>chown user:group file</cmd>  \u2014 change owner and group at once\n<cmd>chgrp group file</cmd>       \u2014 change the group only\n\nYou usually need <hl>sudo</hl> to change ownership on files you don't own.\n\n<cmd>chown -R user:group dir/</cmd>  \u2014 the <hl>-R</hl> flag applies changes recursively to everything inside a directory.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l report.txt",
+                  "output": "-rw-r--r-- 1 alice staff 512 Mar 10 report.txt"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "sudo chown bob:devs report.txt",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l report.txt",
+                  "output": "-rw-r--r-- 1 bob devs 512 Mar 10 report.txt"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does chown alice:devs project.sh do?",
+              "options": [
+                "Changes the file permissions to allow alice and devs access",
+                "Sets alice as the owner and devs as the group",
+                "Adds alice to the devs group",
+                "Removes alice from the file's access list"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! The format is chown owner:group \u2014 alice becomes the owner, devs becomes the group.",
+                "bad": "chown owner:group sets the owner and the group. alice is the new owner, devs is the new group."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To change ownership of a whole directory tree recursively, add the ",
+                {
+                  "blank": 0
+                },
+                " flag to chown."
+              ],
+              "words": [
+                "-R",
+                "-r",
+                "-f",
+                "-v"
+              ],
+              "correct": [
+                "-R"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -R means recursive \u2014 it applies chown to the directory and everything inside it.",
+                "bad": "-R (capital R) makes chown work recursively on all files and subdirectories."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Change the group of logs/ and all its contents to the 'admin' group:",
+              "tokens": [
+                "admin",
+                "chgrp",
+                "-R",
+                "logs/"
+              ],
+              "correct_order": [
+                "chgrp",
+                "-R",
+                "admin",
+                "logs/"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! chgrp then -R flag then the group name then the target.",
+                "bad": "Order: command (chgrp) \u2192 flag (-R) \u2192 group name (admin) \u2192 target directory (logs/)."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Change the owner of server.conf to 'root' and the group to 'sysadmin'.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "sudo chown root:sysadmin server.conf",
+                "chown root:sysadmin server.conf"
+              ],
+              "hint": "Use chown owner:group filename. You may need sudo for system files.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>-rw-r--r-- 1 root sysadmin 2048 Mar 10 server.conf</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: sudo chown root:sysadmin server.conf</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.5",
+          "title": "Default permissions \u2014 umask",
+          "command": "umask",
+          "description": "Control the default permissions assigned to new files and directories",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "What is umask?",
+              "text": "<hl>umask</hl> sets the default permissions that are <hl>removed</hl> when you create a new file or directory.\n\nThe starting point is:\n  Files:       <hl>666</hl> (rw-rw-rw-)\n  Directories: <hl>777</hl> (rwxrwxrwx)\n\nThe umask value is subtracted:\n  umask <hl>022</hl> \u2192 files get 644 (666-022), dirs get 755 (777-022)\n  umask <hl>077</hl> \u2192 files get 600, dirs get 700 (private)\n\nRun <cmd>umask</cmd> to see the current value. Change it by running <cmd>umask 027</cmd>. Put it in <cmd>~/.bashrc</cmd> to make it permanent.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "umask",
+                  "output": "0022"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "touch newfile.txt && ls -l newfile.txt",
+                  "output": "-rw-r--r-- 1 user staff 0 Mar 10 newfile.txt"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Calculate umask result",
+              "question": "With umask 022, what permissions do new directories get?",
+              "options": [
+                "644",
+                "777",
+                "755",
+                "700"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Directories start at 777, subtract 022 = 755 (rwxr-xr-x).",
+                "bad": "Directories start at 777. 777 minus 022 = 755 (rwxr-xr-x)."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Private files",
+              "question": "Which umask value makes new files readable and writable only by their owner?",
+              "options": [
+                "022",
+                "002",
+                "077",
+                "044"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! umask 077 removes all group and other permissions. Files get 600 (rw-------).",
+                "bad": "umask 077 removes rwx from group and others. Files start at 666, minus 077 = 600 (owner only)."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "umask removes permissions from the ",
+                {
+                  "blank": 0
+                },
+                ", rather than adding them like chmod does."
+              ],
+              "words": [
+                "default",
+                "owner",
+                "file",
+                "group"
+              ],
+              "correct": [
+                "default"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! umask works by masking (removing) bits from the default permissions.",
+                "bad": "umask subtracts from the default permission set (666 for files, 777 for directories)."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Check your current umask value.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "umask"
+              ],
+              "hint": "Just type the command name with no arguments.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>0022</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Just run: umask (no arguments)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.6",
+          "title": "Special permission bits",
+          "command": "chmod +s, +t",
+          "description": "Learn setuid, setgid, and the sticky bit",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "setuid, setgid, sticky bit",
+              "text": "Beyond rwx, Linux has three special bits:\n\n<hl>setuid (s on user execute)</hl>\nWhen set on an executable, it runs as the file's <hl>owner</hl>, not the person who ran it. Used by commands like <cmd>passwd</cmd> that need root access.\n\n<hl>setgid (s on group execute)</hl>\nOn a directory: new files inside inherit the directory's group instead of the creator's group. Great for shared project folders.\n\n<hl>sticky bit (t on others execute)</hl>\nOn a directory: users can only delete their <hl>own</hl> files. Used on <cmd>/tmp</cmd> so users can't delete each other's temp files.\n\n<warn>setuid on scripts is ignored by Linux for security reasons.</warn>",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -l /usr/bin/passwd",
+                  "output": "-rwsr-xr-x 1 root root 59640 Mar 10 /usr/bin/passwd"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -ld /tmp",
+                  "output": "drwxrwxrwt 12 root root 4096 Mar 10 /tmp"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Identify the sticky bit",
+              "question": "In the permission string drwxrwxrwt, what does the 't' at the end indicate?",
+              "options": [
+                "The directory is temporary",
+                "The sticky bit is set \u2014 users can only delete their own files",
+                "The directory is read-only",
+                "The setuid bit is active"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! t (sticky bit) on a directory means only the file's owner can delete it.",
+                "bad": "The t at the end of the permission string is the sticky bit. It prevents users from deleting other users' files."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Identify setuid",
+              "question": "The /usr/bin/passwd file shows -rwsr-xr-x. What does the 's' in the user execute position mean?",
+              "options": [
+                "The file can be run by anyone",
+                "The setuid bit is set \u2014 it runs as root regardless of who runs it",
+                "The file is shared",
+                "The file is a symlink"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! s in the user execute position = setuid. passwd runs as root so it can update /etc/shadow.",
+                "bad": "s in the user execute position is the setuid bit. The program runs with the owner's privileges (root here)."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To set the sticky bit on a shared directory, run: chmod ",
+                {
+                  "blank": 0
+                },
+                " shared/"
+              ],
+              "words": [
+                "+t",
+                "+s",
+                "o+t",
+                "1777"
+              ],
+              "correct": [
+                "+t",
+                "1777"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! chmod +t or chmod 1777 both set the sticky bit.",
+                "bad": "Use chmod +t dirname or chmod 1777 dirname to set the sticky bit."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "setgid on directories",
+              "question": "You set setgid on a shared project directory. A new file is created inside. What group does it get?",
+              "options": [
+                "The group of the person who created the file",
+                "No group at all",
+                "root",
+                "The group of the directory itself"
+              ],
+              "correct": 3,
+              "xp": 20,
+              "feedback": {
+                "ok": "Correct! With setgid, new files inherit the directory's group \u2014 useful for team collaboration.",
+                "bad": "setgid on a directory makes all new files inside inherit the directory's group, not the creator's."
+              }
+            }
+          ]
+        },
+        {
+          "id": "4.7",
+          "title": "Section 4 review",
+          "command": "review",
+          "description": "Test your understanding of permissions and ownership",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "What does -rwxr-x--- tell you about group permissions?",
+              "options": [
+                "Read, write, execute",
+                "Read and execute only",
+                "No access at all",
+                "Write and execute only"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Positions 5-7 are group: r-x = read and execute, no write.",
+                "bad": "Positions 5-7 (r-x) represent group permissions: read=yes, write=no, execute=yes."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "Which octal value gives the owner all permissions, and no permissions to anyone else?",
+              "options": [
+                "700",
+                "777",
+                "755",
+                "600"
+              ],
+              "correct": 0,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! 7 = rwx for owner, 0 = no permissions for group, 0 = no permissions for others.",
+                "bad": "700: owner gets 7 (rwx), group gets 0 (---), others get 0 (---). Only the owner can access it."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review",
+              "sentence": [
+                "To give the file's group write permission, run: chmod ",
+                {
+                  "blank": 0
+                },
+                " file.txt"
+              ],
+              "words": [
+                "g+w",
+                "o+w",
+                "u+w",
+                "a+w"
+              ],
+              "correct": [
+                "g+w"
+              ],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! g = group, + = add, w = write.",
+                "bad": "g+w targets the group specifically. u=user, g=group, o=others, a=all."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You want to transfer ownership of a file to user 'deploy'. Which command do you use?",
+              "options": [
+                "chmod deploy file",
+                "chown deploy file",
+                "chgrp deploy file",
+                "usermod deploy file"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! chown changes the file owner.",
+                "bad": "chown is the command to change file ownership. chmod changes permissions, chgrp changes group."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review",
+              "instruction": "Make script.sh executable by everyone using octal notation:",
+              "tokens": [
+                "755",
+                "script.sh",
+                "chmod"
+              ],
+              "correct_order": [
+                "chmod",
+                "755",
+                "script.sh"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! chmod then the octal value then the target file.",
+                "bad": "Order: command (chmod) \u2192 octal value (755) \u2192 target file (script.sh)."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "With umask 027, what permissions do new files get?",
+              "options": [
+                "640",
+                "644",
+                "600",
+                "777"
+              ],
+              "correct": 0,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Files start at 666, minus 027 = 640 (rw-r-----).",
+                "bad": "Files default to 666. Subtract umask 027: 666 - 027 = 640 (rw-r-----)."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

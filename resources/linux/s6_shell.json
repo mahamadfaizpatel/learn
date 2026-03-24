@@ -1,0 +1,768 @@
+{
+  "sections": [
+    {
+      "id": "6",
+      "title": "Shell & environment",
+      "subtitle": "Customise your shell, set variables, and make Linux yours",
+      "difficulty": "intermediate",
+      "color": "#c084fc",
+      "lessons": [
+        {
+          "id": "6.1",
+          "title": "Shell variables",
+          "command": "VAR=value, echo $VAR",
+          "description": "Create, read, and use variables in the shell",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Creating and reading variables",
+              "text": "Shell variables store values you can reference later.\n\n<cmd>NAME=value</cmd>        \u2014 set a variable (<warn>no spaces around =</warn>)\n<cmd>echo $NAME</cmd>        \u2014 read the variable (note the <hl>$</hl> prefix)\n<cmd>echo \"Hello $NAME\"</cmd> \u2014 use it inside a string\n<cmd>unset NAME</cmd>        \u2014 delete the variable\n\nVariable names are case-sensitive. By convention:\n<hl>UPPER_CASE</hl> \u2014 environment variables (system-wide)\n<hl>lower_case</hl> \u2014 local script variables\n\nVariables set this way only exist in the current shell session.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "PROJECT=myapp",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "echo $PROJECT",
+                  "output": "myapp"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "echo \"Deploying $PROJECT to production\"",
+                  "output": "Deploying myapp to production"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "Which of these correctly sets a shell variable?",
+              "options": [
+                "NAME = Alice",
+                "NAME=Alice",
+                "$NAME=Alice",
+                "set NAME Alice"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! No spaces around the = sign. NAME=Alice is the correct syntax.",
+                "bad": "Spaces around = cause an error in bash. The correct syntax is NAME=Alice with no spaces."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To read the value of a variable called PORT, use echo ",
+                {
+                  "blank": 0
+                },
+                "PORT."
+              ],
+              "words": [
+                "$",
+                "@",
+                "#",
+                "&"
+              ],
+              "correct": [
+                "$"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! $ tells the shell to expand the variable: echo $PORT",
+                "bad": "$ is the prefix to read a variable's value: echo $PORT"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Scope",
+              "question": "You set MYVAR=hello in one terminal window. You open a second terminal. Is MYVAR available there?",
+              "options": [
+                "Yes, shell variables are global",
+                "No \u2014 shell variables only exist in the current shell session",
+                "Only if you used sudo",
+                "Yes, but read-only"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Shell variables are local to the session. To share across sessions, use export.",
+                "bad": "Shell variables are local to the current shell process. You need export to make them available to child processes."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Create a variable called GREETING with the value 'Hello Linux' then print it.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "GREETING='Hello Linux' && echo $GREETING",
+                "GREETING=\"Hello Linux\" && echo $GREETING",
+                "GREETING=Hello && echo $GREETING"
+              ],
+              "hint": "Set the variable, then use echo $GREETING to print it. Use quotes if the value has spaces.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>Hello Linux</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try:\nGREETING='Hello Linux'\necho $GREETING</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.2",
+          "title": "Environment variables \u2014 export & env",
+          "command": "export, env, printenv",
+          "description": "Make variables available to child processes and view the environment",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "export and env",
+              "text": "<hl>Environment variables</hl> are variables that are passed to all child processes.\n\n<cmd>export VAR=value</cmd>   \u2014 set and export a variable\n<cmd>export VAR</cmd>         \u2014 export an already-set variable\n<cmd>env</cmd>                \u2014 list all current environment variables\n<cmd>printenv VAR</cmd>       \u2014 print the value of one variable\n<cmd>unset VAR</cmd>          \u2014 remove a variable\n\nCommon environment variables:\n<hl>HOME</hl>   \u2014 your home directory (/home/user)\n<hl>USER</hl>   \u2014 your username\n<hl>SHELL</hl>  \u2014 your current shell (/bin/bash)\n<hl>LANG</hl>   \u2014 your locale setting",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "export DB_HOST=localhost",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "printenv DB_HOST",
+                  "output": "localhost"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "printenv HOME",
+                  "output": "/home/user"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What is the difference between a shell variable and an environment variable?",
+              "options": [
+                "There is no difference",
+                "Shell variables use uppercase, environment variables use lowercase",
+                "Environment variables (exported) are passed to child processes; shell variables are not",
+                "Environment variables are stored on disk"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! export makes a variable part of the environment, visible to any child process started from this shell.",
+                "bad": "Shell variables stay in the current shell. export promotes them to environment variables, which are inherited by child processes."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To see the value of the HOME environment variable, run ",
+                {
+                  "blank": 0
+                },
+                " HOME."
+              ],
+              "words": [
+                "printenv",
+                "ls",
+                "cat",
+                "show"
+              ],
+              "correct": [
+                "printenv"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! printenv HOME shows the value of the HOME variable.",
+                "bad": "printenv NAME prints a single environment variable's value. Or use echo $HOME."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Export an environment variable called API_KEY with value 'abc123':",
+              "tokens": [
+                "API_KEY=abc123",
+                "export"
+              ],
+              "correct_order": [
+                "export",
+                "API_KEY=abc123"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! export comes first, then the variable assignment.",
+                "bad": "export VAR=value \u2014 the export keyword comes first, then the variable name and value."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Print all current environment variables.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "env",
+                "printenv",
+                "env | sort"
+              ],
+              "hint": "Use the env command to list all environment variables.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>HOME=/home/user\nSHELL=/bin/bash\nUSER=user\nPATH=/usr/local/bin:/usr/bin:/bin\nLANG=en_US.UTF-8\n...</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: env (lists all environment variables)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.3",
+          "title": "The PATH variable",
+          "command": "PATH, which",
+          "description": "Understand how Linux finds commands and customise your PATH",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "How PATH works",
+              "text": "<hl>PATH</hl> is an environment variable that tells the shell <hl>where to look</hl> for commands.\n\nIt's a colon-separated list of directories:\n<cmd>echo $PATH</cmd>\n<hl>/usr/local/bin:/usr/bin:/bin:/home/user/.local/bin</hl>\n\nWhen you type <cmd>git</cmd>, the shell searches each directory in PATH from left to right until it finds an executable named 'git'. If it finds none, you get 'command not found'.\n\nTo add a directory to PATH:\n<cmd>export PATH=\"$HOME/scripts:$PATH\"</cmd>\n\nAlways append <hl>$PATH</hl> at the end to keep the existing directories \u2014 replacing PATH entirely would break all commands.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "echo $PATH",
+                  "output": "/usr/local/bin:/usr/bin:/bin:/home/user/.local/bin"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "which python3",
+                  "output": "/usr/bin/python3"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You type a command but get 'command not found'. What is the most likely reason?",
+              "options": [
+                "The command file is corrupted",
+                "You need to use sudo",
+                "The command's directory is not in your PATH",
+                "The terminal needs restarting"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! 'command not found' usually means the executable exists but its directory isn't in PATH.",
+                "bad": "When the shell can't find a command, it's usually because the directory containing it isn't listed in PATH."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To safely add ~/bin to your PATH without removing existing directories, run: export PATH=\"~/bin:",
+                {
+                  "blank": 0
+                },
+                "\""
+              ],
+              "words": [
+                "$PATH",
+                "$HOME",
+                "$SHELL",
+                "$USER"
+              ],
+              "correct": [
+                "$PATH"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Always include $PATH when extending it, otherwise you lose all existing command locations.",
+                "bad": "$PATH preserves the existing path. Without it, you'd overwrite PATH and lose access to all commands."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "which command",
+              "question": "What does 'which python3' tell you?",
+              "options": [
+                "The version of Python installed",
+                "The full path to the python3 executable that will be run",
+                "Whether python3 is installed",
+                "The python3 documentation location"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! which searches PATH and prints the full path of the first matching executable.",
+                "bad": "which shows you exactly which file will be run when you type that command \u2014 useful when multiple versions exist."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Print your current PATH value.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "echo $PATH",
+                "printenv PATH"
+              ],
+              "hint": "Use echo with the $ prefix to read the PATH variable.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/user/.local/bin</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: echo $PATH or printenv PATH</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.4",
+          "title": "Config files \u2014 .bashrc & .profile",
+          "command": ".bashrc, source",
+          "description": "Make your customisations permanent by editing shell config files",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "bashrc and profile",
+              "text": "Changes you make in the terminal disappear when you close it. To make them permanent, add them to config files:\n\n<hl>~/.bashrc</hl>     \u2014 runs every time you open a new interactive terminal\n<hl>~/.profile</hl>    \u2014 runs on login (once per session)\n<hl>~/.bash_profile</hl> \u2014 login shell config (overrides .profile if present)\n\nTo apply changes without opening a new terminal:\n<cmd>source ~/.bashrc</cmd>   \u2014 reload the file\n<cmd>. ~/.bashrc</cmd>        \u2014 shorthand for source\n\nPut these in ~/.bashrc:\n  \u2022 Aliases\n  \u2022 PATH additions\n  \u2022 Environment variable exports\n  \u2022 Custom prompt (PS1)",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "echo 'export EDITOR=nano' >> ~/.bashrc",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "source ~/.bashrc",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "echo $EDITOR",
+                  "output": "nano"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You add export MY_VAR=hello to ~/.bashrc. When does this take effect?",
+              "options": [
+                "Immediately in the current terminal",
+                "After you run source ~/.bashrc or open a new terminal",
+                "After rebooting the system",
+                "Only in scripts, not interactive sessions"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! You must source the file or open a new terminal for changes to apply.",
+                "bad": "Editing ~/.bashrc doesn't change the current environment. Run source ~/.bashrc or open a new terminal."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To reload ~/.bashrc in your current terminal without closing it, run: ",
+                {
+                  "blank": 0
+                },
+                " ~/.bashrc"
+              ],
+              "words": [
+                "source",
+                "run",
+                "exec",
+                "load"
+              ],
+              "correct": [
+                "source"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! source (or its shorthand .) executes the file in the current shell.",
+                "bad": "source ~/.bashrc (or . ~/.bashrc) re-runs the config file in the current shell session."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Which file?",
+              "question": "Where should you add a PATH update so it applies every time you open a terminal?",
+              "options": [
+                "/etc/hosts",
+                "~/.bashrc",
+                "~/.bash_history",
+                "/tmp/config"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! ~/.bashrc is sourced every time you open a new interactive bash shell.",
+                "bad": "~/.bashrc is the right place \u2014 it's read every time you open a new terminal window."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Reload your .bashrc file to apply recent changes.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "source ~/.bashrc",
+                ". ~/.bashrc",
+                "source $HOME/.bashrc"
+              ],
+              "hint": "Use source followed by the path to .bashrc.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct! .bashrc reloaded.</success>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: source ~/.bashrc\nThe dot shorthand also works: . ~/.bashrc</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.5",
+          "title": "Aliases",
+          "command": "alias, unalias",
+          "description": "Create shortcuts for long or frequently used commands",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Creating aliases",
+              "text": "<hl>Aliases</hl> let you create shorthand names for commands you use often.\n\n<cmd>alias ll='ls -la'</cmd>          \u2014 create an alias\n<cmd>alias gs='git status'</cmd>      \u2014 git shortcut\n<cmd>alias ..='cd ..'</cmd>           \u2014 navigate faster\n<cmd>alias</cmd>                      \u2014 list all defined aliases\n<cmd>unalias ll</cmd>                 \u2014 remove an alias\n\nAliases set in the terminal last only for the session. To make them permanent, add them to <hl>~/.bashrc</hl>:\n\n<cmd>echo \"alias ll='ls -la'\" >> ~/.bashrc</cmd>",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "alias ll='ls -lah'",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ll",
+                  "output": "total 48K\ndrwxr-xr-x  5 user staff 4.0K Mar 10 ./\ndrwxr-xr-x 12 root root  4.0K Mar  8 ../\n-rw-r--r--  1 user staff 3.2K Mar 10 .bashrc\n-rw-r--r--  1 user staff  512 Mar 10 notes.txt"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You define alias gs='git status'. You open a new terminal. Does gs still work?",
+              "options": [
+                "Yes, aliases are permanent",
+                "No \u2014 session aliases disappear when the terminal closes",
+                "Only if you ran it as sudo",
+                "Yes, but only for 24 hours"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Session aliases disappear when the terminal closes. Add them to ~/.bashrc to make them permanent.",
+                "bad": "Aliases set in the terminal are temporary. To persist them, add the alias command to ~/.bashrc."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To make the alias ll='ls -la' permanent, add it to ~/.bashrc using: echo \"alias ll='ls -la'\" ",
+                {
+                  "blank": 0
+                },
+                " ~/.bashrc"
+              ],
+              "words": [
+                ">>",
+                ">",
+                "|",
+                "&&"
+              ],
+              "correct": [
+                ">>"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! >> appends to the file without overwriting it. > would delete the whole file first!",
+                "bad": ">> appends to a file. > would overwrite (delete) the entire .bashrc first \u2014 very dangerous!"
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Create an alias 'update' for 'sudo apt update && sudo apt upgrade':",
+              "tokens": [
+                "alias",
+                "'sudo apt update && sudo apt upgrade'",
+                "update="
+              ],
+              "correct_order": [
+                "alias",
+                "update=",
+                "'sudo apt update && sudo apt upgrade'"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! alias name='command' is the format.",
+                "bad": "Format: alias name='command'. The name and = must be together with no spaces."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "List all currently defined aliases.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "alias"
+              ],
+              "hint": "Run the alias command with no arguments to list all aliases.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>alias ll='ls -la'\nalias gs='git status'\nalias ..='cd ..'\nalias grep='grep --color=auto'</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Just run: alias (no arguments) to list all defined aliases.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.6",
+          "title": "Command history",
+          "command": "history, !!, Ctrl+R",
+          "description": "Navigate and reuse your command history efficiently",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Shell history",
+              "text": "Bash saves every command you type in a history file (<hl>~/.bash_history</hl>).\n\n<cmd>history</cmd>         \u2014 show numbered history list\n<cmd>history 20</cmd>      \u2014 show last 20 commands\n<cmd>!42</cmd>             \u2014 re-run command number 42\n<cmd>!!</cmd>              \u2014 repeat the last command\n<cmd>!git</cmd>            \u2014 repeat the last command starting with 'git'\n<cmd>Ctrl+R</cmd>          \u2014 interactive reverse search (most powerful)\n\nCtrl+R opens an incremental search \u2014 type part of a past command and press Ctrl+R again to cycle through matches. Press Enter to run, Esc to cancel.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "history 5",
+                  "output": "  196  ls -la\n  197  cd projects\n  198  git status\n  199  cat README.md\n  200  history 5"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "!198",
+                  "output": "On branch main\nnothing to commit, working tree clean"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does !! do?",
+              "options": [
+                "Clears the screen",
+                "Re-runs the last command",
+                "Shows the command history",
+                "Exits the shell"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! !! is shorthand for 'repeat the previous command'. Very useful for: sudo !!",
+                "bad": "!! repeats the last command. A common use: you forget sudo, then type sudo !! to rerun with sudo."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "History search",
+              "question": "What keyboard shortcut opens the interactive reverse history search in bash?",
+              "options": [
+                "Ctrl+H",
+                "Ctrl+R",
+                "Ctrl+F",
+                "Alt+H"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Ctrl+R opens reverse-i-search. Start typing and it finds matching past commands instantly.",
+                "bad": "Ctrl+R opens the reverse incremental search. It's the fastest way to find a command you used earlier."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "Bash stores your command history in a file called ",
+                {
+                  "blank": 0
+                },
+                " in your home directory."
+              ],
+              "words": [
+                ".bash_history",
+                ".bashrc",
+                ".history",
+                "history.log"
+              ],
+              "correct": [
+                ".bash_history"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! ~/.bash_history is the default history file. It's written when you exit the shell.",
+                "bad": "~/.bash_history stores your command history. It's written when the shell exits."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Show the last 10 commands from your history.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "history 10",
+                "history | tail -10",
+                "history | tail -n 10"
+              ],
+              "hint": "Use history followed by the number of lines you want, or pipe it to tail.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>  191  git pull\n  192  npm install\n  193  npm run dev\n  194  ls -la\n  195  cat .env\n  196  git status\n  197  cd ..\n  198  ls\n  199  pwd\n  200  history 10</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: history 10 (shows last 10 commands)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "6.7",
+          "title": "Section 6 review",
+          "command": "review",
+          "description": "Test your understanding of the shell environment",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You set NAME=Linux in your terminal. Your friend opens a new terminal. Can they echo $NAME?",
+              "options": [
+                "Yes, shell variables are shared",
+                "No \u2014 shell variables are local to the session",
+                "Only if they log in as the same user",
+                "Only if NAME was in /etc/environment"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Shell variables are session-local. Use export and add to ~/.bashrc to share across sessions.",
+                "bad": "Shell variables only exist in the current process. A new terminal gets a fresh environment."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review",
+              "sentence": [
+                "To make a variable called DB_URL available to programs you launch from the shell, use: ",
+                {
+                  "blank": 0
+                },
+                " DB_URL=postgres://localhost"
+              ],
+              "words": [
+                "export",
+                "set",
+                "source",
+                "declare"
+              ],
+              "correct": [
+                "export"
+              ],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! export makes the variable part of the environment, available to child processes.",
+                "bad": "export promotes a shell variable to an environment variable, making it available to child processes."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "What happens if you set PATH=~/bin (without $PATH at the end)?",
+              "options": [
+                "~/bin is safely added to the existing path",
+                "PATH is overwritten \u2014 all other commands will stop working",
+                "Only temporary \u2014 PATH resets on next command",
+                "Nothing, PATH cannot be changed"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Overwriting PATH without $PATH destroys the existing paths. Always use: export PATH=\"~/bin:$PATH\"",
+                "bad": "Overwriting PATH replaces all existing entries. You'd lose access to ls, cd, and every other command. Always append: $PATH at the end."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "What is the fastest way to search for a command you used two days ago?",
+              "options": [
+                "cat ~/.bash_history",
+                "history | grep",
+                "Ctrl+R and start typing part of the command",
+                "ls -t ~/.bash_history"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Ctrl+R opens an interactive reverse search \u2014 just type a few characters and it finds matches instantly.",
+                "bad": "Ctrl+R is the fastest \u2014 it opens an interactive incremental search through your history as you type."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review",
+              "sentence": [
+                "To make an alias permanent, add it to ~/.bashrc and then run ",
+                {
+                  "blank": 0
+                },
+                " ~/.bashrc to apply it immediately."
+              ],
+              "words": [
+                "source",
+                "run",
+                "exec",
+                "bash"
+              ],
+              "correct": [
+                "source"
+              ],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! source reloads the file in the current shell without opening a new terminal.",
+                "bad": "source ~/.bashrc (or . ~/.bashrc) applies changes immediately without needing a new terminal."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "!! is typed after a failed command. What does it do?",
+              "options": [
+                "Shows the error in detail",
+                "Reruns the last command",
+                "Deletes the last command from history",
+                "Exits the terminal"
+              ],
+              "correct": 1,
+              "xp": 20,
+              "feedback": {
+                "ok": "Correct! !! reruns the last command. A famous use: you forgot sudo, then type sudo !! to rerun with sudo.",
+                "bad": "!! is shorthand for 'repeat the last command'. Commonly used as sudo !! to rerun with elevated privileges."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

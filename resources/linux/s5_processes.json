@@ -1,0 +1,753 @@
+{
+  "sections": [
+    {
+      "id": "5",
+      "title": "Processes & jobs",
+      "subtitle": "See, control and manage everything running on your system",
+      "difficulty": "intermediate",
+      "color": "#4fa3e3",
+      "lessons": [
+        {
+          "id": "5.1",
+          "title": "What is a process?",
+          "command": "ps",
+          "description": "Understand processes and list what's running with ps",
+          "xp_total": 55,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Processes and PIDs",
+              "text": "Every program running on Linux is a <hl>process</hl>. Each gets a unique <hl>PID</hl> (Process ID).\n\n<cmd>ps</cmd>          \u2014 show your own processes\n<cmd>ps aux</cmd>      \u2014 show ALL processes from ALL users\n<cmd>ps aux | grep nginx</cmd> \u2014 find a specific process\n\nKey columns in ps aux:\n<hl>PID</hl>   \u2014 process ID\n<hl>%CPU</hl>  \u2014 CPU usage\n<hl>%MEM</hl>  \u2014 memory usage\n<hl>STAT</hl>  \u2014 status (R=running, S=sleeping, Z=zombie)\n<hl>COMMAND</hl> \u2014 the program name",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ps aux | head -4",
+                  "output": "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot         1  0.0  0.1  22560  1024 ?        Ss   09:00   0:01 /sbin/init\nuser      1234  0.2  0.8  45320  8192 pts/0    S    09:05   0:00 bash\nuser      1290  0.0  0.1  17820  1024 pts/0    R+   09:10   0:00 ps aux"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does PID stand for?",
+              "options": [
+                "Program Identification Data",
+                "Process ID",
+                "Primary Input Device",
+                "Process Interrupt Descriptor"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! PID is the unique Process ID assigned to every running program.",
+                "bad": "PID stands for Process ID \u2014 a unique number Linux assigns to each running process."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Reading ps output",
+              "question": "In ps aux, a process shows STAT as 'Z'. What does this mean?",
+              "options": [
+                "It is in deep sleep",
+                "It is a zombie process \u2014 finished but not cleaned up",
+                "It is paused by the user",
+                "It is running at maximum speed"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Z = zombie. The process finished but its parent hasn't acknowledged it yet.",
+                "bad": "Z in the STAT column means zombie \u2014 the process has exited but hasn't been fully cleaned up by its parent."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To find all running nginx processes, combine ps aux with a ",
+                {
+                  "blank": 0
+                },
+                " for 'nginx'."
+              ],
+              "words": [
+                "grep",
+                "find",
+                "search",
+                "filter"
+              ],
+              "correct": [
+                "grep"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! ps aux | grep nginx filters the output to show only nginx processes.",
+                "bad": "Pipe ps aux into grep: ps aux | grep nginx"
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Show all running processes for all users.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ps aux",
+                "ps -aux"
+              ],
+              "hint": "Use ps with the aux flags \u2014 a=all users, u=user format, x=include processes without a terminal.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>USER       PID %CPU %MEM COMMAND\nroot         1  0.0  0.1 /sbin/init\nuser      1234  0.1  0.4 bash\nuser      1567  0.0  0.2 ssh-agent</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: ps aux (shows all processes from all users in a readable format)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.2",
+          "title": "Real-time monitoring \u2014 top",
+          "command": "top, htop",
+          "description": "Watch live CPU and memory usage with top",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "top \u2014 live process viewer",
+              "text": "<cmd>top</cmd> shows a live, updating view of all processes. It refreshes every 3 seconds by default.\n\nKey controls inside top:\n<hl>q</hl>        \u2014 quit\n<hl>k</hl>        \u2014 kill a process (type its PID)\n<hl>M</hl>        \u2014 sort by memory usage\n<hl>P</hl>        \u2014 sort by CPU usage\n<hl>1</hl>        \u2014 show individual CPU cores\n\n<hl>htop</hl> is a friendlier version with colour and mouse support. Install it with <cmd>sudo apt install htop</cmd>.\n\nThe top header shows overall CPU%, memory, and load averages \u2014 three numbers for 1, 5, and 15 minute averages.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "top -bn1 | head -8",
+                  "output": "top - 09:15:01 up 2 days,  3:22,  2 users,  load average: 0.12, 0.08, 0.05\nTasks: 142 total,   1 running, 141 sleeping\n%Cpu(s):  2.1 us,  0.5 sy,  0.0 ni, 97.2 id\nMiB Mem :   7832.0 total,   3211.0 free,   2890.0 used\n\n  PID USER     %CPU %MEM COMMAND\n 1234 user      1.0  0.8 bash\n  890 root      0.3  0.2 sshd"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "Inside top, which key sorts processes by memory usage?",
+              "options": [
+                "P",
+                "M",
+                "m",
+                "s"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! M (capital) sorts by memory. P sorts by CPU.",
+                "bad": "Press M (capital) to sort by memory usage, P to sort by CPU."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Load average",
+              "question": "top shows load averages of 0.5, 1.2, 0.8. What do these three numbers represent?",
+              "options": [
+                "CPU, memory, and disk usage",
+                "Minimum, maximum, and average load",
+                "Load averages over the last 1, 5, and 15 minutes",
+                "Number of processes, threads, and connections"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! The three load averages are 1-minute, 5-minute, and 15-minute windows.",
+                "bad": "Load averages show how busy the system has been: the three numbers are 1, 5, and 15 minute windows."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To quit top and return to the terminal, press ",
+                {
+                  "blank": 0
+                },
+                "."
+              ],
+              "words": [
+                "q",
+                "x",
+                "Ctrl+C",
+                "Esc"
+              ],
+              "correct": [
+                "q",
+                "Ctrl+C"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! q exits top cleanly. Ctrl+C also works.",
+                "bad": "Press q to exit top gracefully. Ctrl+C also works in a pinch."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "htop vs top",
+              "question": "What is the main advantage of htop over top?",
+              "options": [
+                "htop uses less memory",
+                "htop is faster",
+                "htop shows more system info",
+                "htop has colour output, mouse support, and easier navigation"
+              ],
+              "correct": 3,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! htop is more user-friendly with colour, mouse clicks, and easier key controls.",
+                "bad": "htop improves on top with a colour interface, mouse support, and more intuitive controls. It may need to be installed."
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.3",
+          "title": "Stopping processes \u2014 kill",
+          "command": "kill, killall, pkill",
+          "description": "Send signals to processes to stop, restart, or communicate with them",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Signals and kill",
+              "text": "Linux communicates with processes through <hl>signals</hl>.\n\n<cmd>kill PID</cmd>         \u2014 send SIGTERM (15) \u2014 asks the process to stop gracefully\n<cmd>kill -9 PID</cmd>      \u2014 send SIGKILL \u2014 forces immediate termination, no cleanup\n<cmd>kill -1 PID</cmd>      \u2014 send SIGHUP \u2014 reload config (useful for servers)\n<cmd>killall nginx</cmd>    \u2014 kill all processes named 'nginx'\n<cmd>pkill -f pattern</cmd> \u2014 kill processes matching a pattern\n\n<warn>Use kill -9 as a last resort \u2014 the process gets no chance to save data or clean up.</warn>",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ps aux | grep sleep",
+                  "output": "user  2341  0.0  0.0  sleep 300"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "kill 2341",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ps aux | grep sleep",
+                  "output": "user  2342  0.0  0.0  grep sleep"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What is the difference between kill PID and kill -9 PID?",
+              "options": [
+                "There is no difference",
+                "kill -9 sends a warning first",
+                "kill requests graceful shutdown; kill -9 forces immediate termination",
+                "kill PID only works as root"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! SIGTERM (default) asks nicely. SIGKILL (-9) is forceful and immediate.",
+                "bad": "kill sends SIGTERM \u2014 a polite request to stop. kill -9 sends SIGKILL \u2014 the process is terminated immediately with no chance to clean up."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To kill every process named 'python3' at once, use ",
+                {
+                  "blank": 0
+                },
+                " python3."
+              ],
+              "words": [
+                "killall",
+                "kill -a",
+                "pkill -n",
+                "stopall"
+              ],
+              "correct": [
+                "killall"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! killall kills all processes with that exact name.",
+                "bad": "killall sends a signal to all processes matching the given name: killall python3"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Which signal?",
+              "question": "An nginx server is running. You updated its config file and want it to reload without restarting. Which signal do you send?",
+              "options": [
+                "SIGKILL (-9)",
+                "SIGTERM (-15)",
+                "SIGHUP (-1)",
+                "SIGSTOP (-19)"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! SIGHUP (kill -1) tells many server processes to reload their configuration.",
+                "bad": "SIGHUP (-1) is the 'reload config' signal. Many servers like nginx and sshd respond to it by re-reading their config files."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Forcefully kill the process with PID 4821.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "kill -9 4821",
+                "kill -KILL 4821",
+                "kill -SIGKILL 4821"
+              ],
+              "hint": "Use kill with the -9 flag followed by the PID.",
+              "xp": 25,
+              "output": {
+                "ok": "<success>\u2713 Correct! Process 4821 has been terminated.</success>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: kill -9 4821\n-9 sends SIGKILL, which cannot be caught or ignored by the process.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.4",
+          "title": "Background & foreground jobs",
+          "command": "bg, fg, jobs, &",
+          "description": "Run commands in the background and switch jobs between foreground and background",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Job control",
+              "text": "Linux lets you run multiple jobs in one terminal window.\n\n<cmd>command &</cmd>       \u2014 start a command in the background\n<cmd>Ctrl+Z</cmd>          \u2014 pause (suspend) the current foreground process\n<cmd>jobs</cmd>            \u2014 list all background/paused jobs with their job number\n<cmd>bg %1</cmd>           \u2014 resume job 1 in the background\n<cmd>fg %1</cmd>           \u2014 bring job 1 back to the foreground\n\nJob numbers (like %1, %2) are different from PIDs \u2014 they're just numbered per-terminal session.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "sleep 100 &",
+                  "output": "[1] 3421"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "jobs",
+                  "output": "[1]+  Running    sleep 100 &"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "fg %1",
+                  "output": "sleep 100"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You're running a long command. You press Ctrl+Z. What happens?",
+              "options": [
+                "The command is cancelled and deleted",
+                "The command is paused and sent to the background in a stopped state",
+                "The command finishes immediately",
+                "The terminal closes"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Ctrl+Z suspends the process. You can then resume it with fg or bg.",
+                "bad": "Ctrl+Z suspends (pauses) the process \u2014 it's still alive, just stopped. Use fg to bring it back or bg to resume it in the background."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To start a command running in the background immediately, add ",
+                {
+                  "blank": 0
+                },
+                " to the end of the command."
+              ],
+              "words": [
+                "&",
+                "bg",
+                "#",
+                "~"
+              ],
+              "correct": [
+                "&"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Appending & starts the process in the background: sleep 300 &",
+                "bad": "Append & to run any command in the background: command &"
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Bring background job number 2 back to the foreground:",
+              "tokens": [
+                "%2",
+                "fg"
+              ],
+              "correct_order": [
+                "fg",
+                "%2"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! fg brings a job to the foreground. %2 specifies job number 2.",
+                "bad": "fg %2 \u2014 the fg command followed by the job number. Job numbers are listed by the jobs command."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "List all current background and suspended jobs in this terminal session.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "jobs",
+                "jobs -l"
+              ],
+              "hint": "Use the jobs command. It shows all jobs with their number and status.",
+              "xp": 20,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>[1]   Running    python3 server.py &\n[2]-  Stopped    vim notes.txt\n[3]+  Running    npm run watch &</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: jobs \u2014 it lists all jobs running or paused in the current shell session.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.5",
+          "title": "Persistent processes \u2014 nohup",
+          "command": "nohup, disown",
+          "description": "Keep processes running after you log out",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "nohup and disown",
+              "text": "When you close a terminal or log out via SSH, Linux sends a <hl>SIGHUP</hl> signal to all your processes, killing them.\n\n<cmd>nohup command &</cmd>    \u2014 run a command that survives logout\n  Output goes to <hl>nohup.out</hl> by default\n\n<cmd>nohup command > out.log 2>&1 &</cmd>  \u2014 redirect output to a file\n\n<cmd>disown %1</cmd>          \u2014 detach an already-running background job from the terminal (it won't get SIGHUP)\n\nFor long-running server processes, <hl>screen</hl> or <hl>tmux</hl> are even better \u2014 they let you reattach to the session later.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "nohup python3 worker.py > worker.log 2>&1 &",
+                  "output": "[1] 4521"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "jobs",
+                  "output": "[1]+  Running    nohup python3 worker.py > worker.log 2>&1 &"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "Why does a background process die when you close your SSH session?",
+              "options": [
+                "SSH kills all processes when disconnecting",
+                "The process runs out of memory",
+                "The terminal sends SIGHUP to all child processes on exit",
+                "Background processes always have a time limit"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Closing the terminal sends SIGHUP to all processes in that session.",
+                "bad": "When a terminal closes, it sends SIGHUP to all its child processes. nohup and disown protect against this."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "By default, nohup saves the program's output to a file called ",
+                {
+                  "blank": 0
+                },
+                "."
+              ],
+              "words": [
+                "nohup.out",
+                "output.log",
+                "process.txt",
+                "stdout.log"
+              ],
+              "correct": [
+                "nohup.out"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! nohup redirects all output to nohup.out in the current directory.",
+                "bad": "nohup saves output to nohup.out by default. You can redirect it yourself: nohup cmd > myfile.log &"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "nohup vs disown",
+              "question": "What is the key difference between nohup and disown?",
+              "options": [
+                "They are identical",
+                "nohup is used before starting; disown is used on an already-running job",
+                "disown keeps output; nohup discards it",
+                "nohup works only on root processes"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! You wrap a command with nohup at start time, but you can disown a process that's already running.",
+                "bad": "nohup must be used when starting a command. disown can be used on a job that's already running in the background."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Start backup.sh in the background so it keeps running after you log out, saving output to backup.log.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "nohup bash backup.sh > backup.log 2>&1 &",
+                "nohup ./backup.sh > backup.log 2>&1 &",
+                "nohup sh backup.sh > backup.log 2>&1 &"
+              ],
+              "hint": "Use nohup, then the command, then redirect both stdout and stderr to backup.log, then &.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct! backup.sh will keep running after logout.</success>\n<info>[1] 5621</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: nohup bash backup.sh > backup.log 2>&1 &\n2>&1 redirects stderr to the same file as stdout.</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.6",
+          "title": "Process priority \u2014 nice & renice",
+          "command": "nice, renice",
+          "description": "Control how much CPU a process gets relative to others",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "nice values",
+              "text": "Linux schedules CPU time between processes using a <hl>nice</hl> value.\n\nRange: <hl>-20</hl> (highest priority) to <hl>+19</hl> (lowest priority). Default is 0.\n\nThink of it as how 'nice' the process is to others \u2014 a high nice value means it gives up CPU time readily.\n\n<cmd>nice -n 10 command</cmd>     \u2014 start a command at nice level 10 (lower priority)\n<cmd>renice 15 -p 4521</cmd>      \u2014 change the nice value of running process 4521\n<cmd>renice -5 -p 4521</cmd>      \u2014 raise priority (needs sudo if lowering nice below 0)\n\nUse high nice values for background tasks (backups, compression) so they don't slow down interactive work.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "nice -n 15 gzip bigfile.tar &",
+                  "output": "[1] 5100"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ps -o pid,ni,cmd -p 5100",
+                  "output": "  PID  NI CMD\n 5100  15 gzip bigfile.tar"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "Which nice value gives a process the highest CPU priority?",
+              "options": [
+                "+19",
+                "0",
+                "-20",
+                "10"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! -20 is the highest priority. Lower nice = less 'nice' to other processes = more CPU.",
+                "bad": "-20 is the highest priority. The scale runs from -20 (greedy, high priority) to +19 (very nice, low priority)."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Which tool?",
+              "question": "You started a backup job and it's making your computer slow. The job has PID 6200. How do you lower its priority without stopping it?",
+              "options": [
+                "kill -19 6200",
+                "nice 6200",
+                "renice 19 -p 6200",
+                "bg 6200"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! renice changes the priority of an already-running process. 19 = very low priority.",
+                "bad": "renice changes priority of a running process. nice is only for starting new processes. renice 19 -p 6200 gives the job very low priority."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To start a compression job at the lowest possible priority so it doesn't impact other tasks, run: nice -n ",
+                {
+                  "blank": 0
+                },
+                " gzip archive.tar"
+              ],
+              "words": [
+                "19",
+                "-20",
+                "0",
+                "10"
+              ],
+              "correct": [
+                "19"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! nice -n 19 is the lowest priority \u2014 the process will only use CPU when nothing else needs it.",
+                "bad": "+19 is the lowest priority (most 'nice' to others). -20 would be the highest priority."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Start the script sync_data.sh at a low priority (nice level 10) in the background.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "nice -n 10 bash sync_data.sh &",
+                "nice -n 10 ./sync_data.sh &",
+                "nice -n 10 sh sync_data.sh &"
+              ],
+              "hint": "Combine nice -n 10, the command, and & to background it.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct! sync_data.sh started at nice level 10.</success>\n<info>[1] 6740</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: nice -n 10 bash sync_data.sh &</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "5.7",
+          "title": "Section 5 review",
+          "command": "review",
+          "description": "Test your understanding of processes and job control",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You see a process with STAT 'S' in ps aux. What does this mean?",
+              "options": [
+                "Stopped by the user",
+                "Sleeping \u2014 waiting for input or a resource",
+                "System process",
+                "Scheduled to run"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! S = sleeping. Most processes spend most of their time in this state.",
+                "bad": "S means sleeping \u2014 the process is alive but waiting for something (disk, network, keyboard input)."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "What command lists jobs running in your current terminal session?",
+              "options": [
+                "ps aux",
+                "top",
+                "jobs",
+                "ls -jobs"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! jobs shows background and suspended processes in your terminal session with job numbers.",
+                "bad": "jobs lists all running and stopped jobs in the current shell session, showing job numbers like [1], [2]."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review",
+              "sentence": [
+                "To kill all processes named 'node' at once, use ",
+                {
+                  "blank": 0
+                },
+                " node."
+              ],
+              "words": [
+                "killall",
+                "kill -a",
+                "pkill -all",
+                "ps kill"
+              ],
+              "correct": [
+                "killall"
+              ],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! killall kills all processes with the given name.",
+                "bad": "killall sends SIGTERM to all processes matching the name: killall node"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You start a task with nohup python3 job.py > out.log 2>&1 & and log out. What happens to the process?",
+              "options": [
+                "It stops immediately when you log out",
+                "It keeps running \u2014 nohup protects it from SIGHUP",
+                "It pauses until you log back in",
+                "It runs once more then stops"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! nohup makes the process ignore SIGHUP, so it keeps running after you disconnect.",
+                "bad": "nohup makes the process immune to SIGHUP \u2014 the signal sent when you log out. The process keeps running."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review",
+              "instruction": "Start server.py in the background at low priority:",
+              "tokens": [
+                "&",
+                "nice",
+                "-n",
+                "15",
+                "python3",
+                "server.py"
+              ],
+              "correct_order": [
+                "nice",
+                "-n",
+                "15",
+                "python3",
+                "server.py",
+                "&"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! nice -n 15 python3 server.py &",
+                "bad": "Order: nice -n 15 (priority) then the command (python3 server.py) then & to background it."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "Which command would you use to bring background job [2] back to the foreground?",
+              "options": [
+                "bg %2",
+                "fg %2",
+                "jobs %2",
+                "resume 2"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! fg %2 brings job 2 to the foreground.",
+                "bad": "fg %jobnum brings a background job to the foreground. bg resumes a stopped job in the background."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

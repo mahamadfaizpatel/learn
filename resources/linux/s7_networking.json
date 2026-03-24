@@ -1,0 +1,779 @@
+{
+  "sections": [
+    {
+      "id": "7",
+      "title": "Networking basics",
+      "subtitle": "Connect, communicate, and transfer files across networks",
+      "difficulty": "intermediate",
+      "color": "#4fa3e3",
+      "lessons": [
+        {
+          "id": "7.1",
+          "title": "Network interfaces \u2014 ip & ifconfig",
+          "command": "ip addr, ifconfig",
+          "description": "View your network interfaces and IP addresses",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Viewing network interfaces",
+              "text": "A <hl>network interface</hl> is how your computer connects to a network \u2014 physical (Ethernet, Wi-Fi) or virtual (loopback).\n\n<cmd>ip addr</cmd>          \u2014 modern way to show all interfaces and IPs\n<cmd>ip addr show eth0</cmd> \u2014 show a specific interface\n<cmd>ifconfig</cmd>         \u2014 older tool (may need: sudo apt install net-tools)\n\nCommon interfaces:\n<hl>eth0 / ens3</hl>  \u2014 wired Ethernet\n<hl>wlan0</hl>        \u2014 Wi-Fi\n<hl>lo</hl>           \u2014 loopback (127.0.0.1, always 'localhost')\n\nLook for <hl>inet</hl> to find the IPv4 address and <hl>inet6</hl> for IPv6.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ip addr show eth0",
+                  "output": "2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500\n    link/ether 00:1a:2b:3c:4d:5e brd ff:ff:ff:ff:ff:ff\n    inet 192.168.1.42/24 brd 192.168.1.255 scope global eth0\n    inet6 fe80::21a:2bff:fe3c:4d5e/64 scope link"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What IP address is always assigned to the loopback interface (lo)?",
+              "options": [
+                "192.168.0.1",
+                "10.0.0.1",
+                "127.0.0.1",
+                "0.0.0.0"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! 127.0.0.1 (localhost) is always the loopback address \u2014 traffic to it never leaves your machine.",
+                "bad": "127.0.0.1 is always the loopback (localhost) address. It refers to your own machine."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Modern vs legacy",
+              "question": "What is the modern replacement for the ifconfig command?",
+              "options": [
+                "netstat",
+                "ip addr",
+                "ping",
+                "route"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! ip (from the iproute2 package) is the modern tool. ifconfig is considered legacy.",
+                "bad": "ip addr is the modern replacement for ifconfig. Most new Linux systems don't have ifconfig by default."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "In the output of ip addr, look for the ",
+                {
+                  "blank": 0
+                },
+                " keyword to find your IPv4 address."
+              ],
+              "words": [
+                "inet",
+                "ipv4",
+                "addr",
+                "host"
+              ],
+              "correct": [
+                "inet"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Lines starting with 'inet' show IPv4 addresses. 'inet6' shows IPv6.",
+                "bad": "'inet' marks the IPv4 address in ip addr output. 'inet6' marks the IPv6 address."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Show all network interfaces and their IP addresses.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ip addr",
+                "ip address",
+                "ip a",
+                "ifconfig -a",
+                "ifconfig"
+              ],
+              "hint": "Use ip addr (or the shorthand ip a) to list all interfaces.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>1: lo: <LOOPBACK,UP,LOWER_UP>\n    inet 127.0.0.1/8 scope host lo\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP>\n    inet 192.168.1.42/24 brd 192.168.1.255 scope global eth0</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: ip addr (or ip a for short)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.2",
+          "title": "Testing connectivity \u2014 ping",
+          "command": "ping",
+          "description": "Test whether a host is reachable and measure response time",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Using ping",
+              "text": "<cmd>ping</cmd> sends ICMP echo requests to a host and measures the round-trip time.\n\n<cmd>ping google.com</cmd>       \u2014 ping until you press Ctrl+C\n<cmd>ping -c 4 google.com</cmd>  \u2014 send exactly 4 packets then stop\n<cmd>ping -i 2 google.com</cmd>  \u2014 wait 2 seconds between packets\n\nWhat to read in the output:\n<hl>time=12.5 ms</hl>  \u2014 round-trip time (lower = faster)\n<hl>ttl=118</hl>       \u2014 time to live (hops remaining)\n<hl>packet loss</hl>   \u2014 0% is good, any loss = connectivity issue\n\n<warn>Some servers block ICMP \u2014 a failed ping doesn't always mean the host is down.</warn>",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ping -c 3 google.com",
+                  "output": "PING google.com (142.250.180.46) 56 bytes\n64 bytes from 142.250.180.46: icmp_seq=1 ttl=118 time=14.2 ms\n64 bytes from 142.250.180.46: icmp_seq=2 ttl=118 time=13.8 ms\n64 bytes from 142.250.180.46: icmp_seq=3 ttl=118 time=14.1 ms\n--- ping statistics ---\n3 packets transmitted, 3 received, 0% packet loss"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You ping a server and see '100% packet loss'. What does this most likely mean?",
+              "options": [
+                "The server is definitely down",
+                "Your internet is very fast",
+                "The server is unreachable from your machine, or it blocks ICMP",
+                "You need to use sudo"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! 100% packet loss means no response, but the server might still be up \u2014 some block ICMP pings.",
+                "bad": "100% packet loss means no response reached you. The server could be down, or it may be blocking ICMP traffic."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To send only 5 ping packets and then stop automatically, use: ping ",
+                {
+                  "blank": 0
+                },
+                " 5 google.com"
+              ],
+              "words": [
+                "-c",
+                "-n",
+                "-t",
+                "-s"
+              ],
+              "correct": [
+                "-c"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -c sets the count. ping -c 5 google.com sends exactly 5 packets.",
+                "bad": "-c sets the packet count: ping -c 5 google.com sends exactly 5 packets then exits."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Reading output",
+              "question": "ping shows 'time=210 ms'. Is this good or bad for a local network?",
+              "options": [
+                "Excellent \u2014 very low latency",
+                "Normal \u2014 expected for local network",
+                "High \u2014 local networks should show 1-5 ms",
+                "It depends on the server location"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! Local network ping should be 1-5 ms. 210 ms suggests a problem with your local network.",
+                "bad": "On a local network, ping times should be 1-5 ms. 210 ms is high and suggests network congestion or a problem."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Ping 8.8.8.8 (Google's DNS server) sending exactly 3 packets.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ping -c 3 8.8.8.8",
+                "ping -c3 8.8.8.8"
+              ],
+              "hint": "Use ping -c 3 followed by the IP address.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>PING 8.8.8.8: 56 data bytes\n64 bytes from 8.8.8.8: icmp_seq=0 ttl=118 time=12.4 ms\n64 bytes from 8.8.8.8: icmp_seq=1 ttl=118 time=11.9 ms\n64 bytes from 8.8.8.8: icmp_seq=2 ttl=118 time=12.1 ms\n3 packets transmitted, 3 received, 0% packet loss</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: ping -c 3 8.8.8.8</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.3",
+          "title": "Fetching data \u2014 curl & wget",
+          "command": "curl, wget",
+          "description": "Download files and make HTTP requests from the command line",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "curl and wget",
+              "text": "<hl>curl</hl> and <hl>wget</hl> both retrieve content from URLs, but have different strengths.\n\n<cmd>curl https://example.com</cmd>              \u2014 print the response to stdout\n<cmd>curl -o file.html https://example.com</cmd>  \u2014 save to a file\n<cmd>curl -I https://example.com</cmd>            \u2014 show response headers only\n<cmd>curl -X POST -d 'key=val' url</cmd>          \u2014 send a POST request\n\n<cmd>wget https://example.com/file.zip</cmd>      \u2014 download a file (saves automatically)\n<cmd>wget -q -O out.txt https://example.com</cmd> \u2014 quiet mode, save to out.txt\n\n<hl>curl</hl> is better for API work and scripting. <hl>wget</hl> is simpler for just downloading files.",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "curl -s https://api.ipify.org",
+                  "output": "203.0.113.42"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "wget -q https://example.com/data.csv",
+                  "output": ""
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ls -lh data.csv",
+                  "output": "-rw-r--r-- 1 user staff 2.1M Mar 10 data.csv"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You want to download a large file and have it automatically saved. Which tool is simpler for this?",
+              "options": [
+                "curl",
+                "wget",
+                "Both are identical",
+                "ping"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! wget saves files automatically without extra flags. curl prints to stdout by default and needs -o to save.",
+                "bad": "wget saves the file automatically. curl prints to stdout and needs -o filename to save to a file."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To save a curl response to a file instead of printing it, use the ",
+                {
+                  "blank": 0
+                },
+                " flag followed by the filename."
+              ],
+              "words": [
+                "-o",
+                "-s",
+                "-I",
+                "-X"
+              ],
+              "correct": [
+                "-o"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! curl -o filename.txt https://... saves the output to a file.",
+                "bad": "-o tells curl where to save the output: curl -o output.txt https://example.com"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "API testing",
+              "question": "Which curl flag shows only the HTTP response headers (not the body)?",
+              "options": [
+                "-s",
+                "-v",
+                "-I",
+                "-o"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! curl -I sends a HEAD request and shows only the headers.",
+                "bad": "-I (uppercase) sends a HEAD request \u2014 you get the headers but not the response body."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Download https://example.com/report.pdf and save it to report.pdf:",
+              "tokens": [
+                "https://example.com/report.pdf",
+                "curl",
+                "-o",
+                "report.pdf"
+              ],
+              "correct_order": [
+                "curl",
+                "-o",
+                "report.pdf",
+                "https://example.com/report.pdf"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! curl -o output_file url is the standard format.",
+                "bad": "Order: curl then -o flag then the filename then the URL."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Use curl to print the contents of https://ifconfig.me/ip (shows your public IP) to the terminal.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "curl https://ifconfig.me/ip",
+                "curl -s https://ifconfig.me/ip",
+                "curl ifconfig.me/ip"
+              ],
+              "hint": "Just use curl followed by the URL. No extra flags needed to print to the terminal.",
+              "xp": 10,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>203.0.113.42</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: curl https://ifconfig.me/ip</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.4",
+          "title": "Remote access \u2014 ssh",
+          "command": "ssh",
+          "description": "Connect securely to remote Linux machines",
+          "xp_total": 65,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "Connecting with SSH",
+              "text": "<hl>SSH</hl> (Secure Shell) lets you log in to remote Linux machines over an encrypted connection.\n\n<cmd>ssh user@hostname</cmd>          \u2014 connect to a remote host\n<cmd>ssh user@192.168.1.10</cmd>      \u2014 connect using IP\n<cmd>ssh -p 2222 user@host</cmd>      \u2014 use a non-default port\n<cmd>ssh -i ~/.ssh/mykey user@host</cmd> \u2014 use a specific key file\n\nAfter connecting, you get a shell on the remote machine and can run commands as if you were sitting at it.\n\n<cmd>exit</cmd> or <cmd>Ctrl+D</cmd>  \u2014 close the SSH session\n\nSSH key authentication (more secure than passwords):\n<cmd>ssh-keygen</cmd>         \u2014 generate a key pair\n<cmd>ssh-copy-id user@host</cmd> \u2014 copy your public key to the server",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ssh deploy@192.168.1.50",
+                  "output": "deploy@192.168.1.50's password:\nWelcome to Ubuntu 22.04 LTS\ndeploy@server:~$"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What does SSH stand for and what does it protect?",
+              "options": [
+                "System Shell Host \u2014 protects from viruses",
+                "Secure Shell \u2014 encrypts all traffic between you and the remote machine",
+                "Server Shell Host \u2014 provides faster connections",
+                "Safe Shell \u2014 prevents file deletion"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! SSH (Secure Shell) encrypts everything \u2014 commands, output, passwords, file transfers.",
+                "bad": "SSH = Secure Shell. It encrypts the entire communication between your machine and the remote server."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To connect as user 'admin' to the host 'server.example.com', run: ssh ",
+                {
+                  "blank": 0
+                },
+                "@server.example.com"
+              ],
+              "words": [
+                "admin",
+                "root",
+                "user",
+                "sudo"
+              ],
+              "correct": [
+                "admin"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Format is ssh username@hostname.",
+                "bad": "SSH format: ssh user@host. You'd use whatever username you have on the remote machine."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "SSH keys vs passwords",
+              "question": "Why is SSH key authentication preferred over password authentication?",
+              "options": [
+                "Keys are faster to type",
+                "Passwords are not supported by modern SSH",
+                "Keys are much harder to brute-force and can be used without typing a password each time",
+                "Keys allow multiple users to share one account"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! SSH keys use public-key cryptography \u2014 nearly impossible to brute-force, and can be used with no password prompt.",
+                "bad": "SSH keys are preferred because they're cryptographically strong (can't be brute-forced) and allow passwordless login when set up correctly."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Reorder the command",
+              "instruction": "Connect to server 10.0.0.5 on port 2222 as user 'deploy':",
+              "tokens": [
+                "ssh",
+                "deploy@10.0.0.5",
+                "-p",
+                "2222"
+              ],
+              "correct_order": [
+                "ssh",
+                "-p",
+                "2222",
+                "deploy@10.0.0.5"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! Flags come before the host: ssh -p 2222 user@host.",
+                "bad": "Order: ssh then flags (-p 2222) then the destination (user@host)."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Connect to the remote server at 192.168.1.100 as user 'ubuntu'.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ssh ubuntu@192.168.1.100"
+              ],
+              "hint": "Use ssh username@ipaddress",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>ubuntu@192.168.1.100's password:\nWelcome to Ubuntu 22.04.3 LTS\nubuntu@server:~$</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: ssh ubuntu@192.168.1.100</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.5",
+          "title": "Transferring files \u2014 scp & rsync",
+          "command": "scp, rsync",
+          "description": "Copy files securely between local and remote machines",
+          "xp_total": 60,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "scp and rsync",
+              "text": "<hl>scp</hl> (Secure Copy) copies files over SSH. <hl>rsync</hl> is smarter \u2014 it only transfers what has changed.\n\n<cmd>scp file.txt user@host:/remote/path/</cmd>       \u2014 local to remote\n<cmd>scp user@host:/remote/file.txt ./</cmd>           \u2014 remote to local\n<cmd>scp -r folder/ user@host:/remote/</cmd>           \u2014 copy a directory\n\n<cmd>rsync -av file.txt user@host:/path/</cmd>        \u2014 sync with verbose output\n<cmd>rsync -av --delete src/ user@host:/dst/</cmd>    \u2014 mirror (delete remote files not in source)\n<cmd>rsync -av user@host:/remote/ ./local/</cmd>      \u2014 pull from remote\n\nrsync flags: <hl>-a</hl> = archive mode (preserve permissions, timestamps), <hl>-v</hl> = verbose, <hl>-z</hl> = compress during transfer",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "scp report.pdf deploy@10.0.0.5:/var/www/",
+                  "output": "report.pdf                          100% 2048KB   4.2MB/s   00:00"
+                },
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "rsync -av --delete ./website/ deploy@10.0.0.5:/var/www/",
+                  "output": "sending incremental file list\nindex.html\nstyle.css\nsent 45.2K bytes  received 320 bytes  18.2K bytes/sec"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "What is the main advantage of rsync over scp?",
+              "options": [
+                "rsync is more secure",
+                "rsync only transfers files that have changed, making it much faster for repeated syncs",
+                "rsync works without SSH",
+                "rsync can transfer to Windows machines"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! rsync does delta transfers \u2014 only the changed parts of files are sent, saving bandwidth and time.",
+                "bad": "rsync's key advantage is incremental transfer \u2014 it checks what's different and only sends the changes."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "To copy a directory recursively with scp, use the ",
+                {
+                  "blank": 0
+                },
+                " flag."
+              ],
+              "words": [
+                "-r",
+                "-R",
+                "-d",
+                "-a"
+              ],
+              "correct": [
+                "-r",
+                "-R"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! scp -r copies directories recursively, including all files and subdirectories.",
+                "bad": "Use -r (recursive) with scp to copy entire directories: scp -r myfolder user@host:/path/"
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "rsync flags",
+              "question": "What does the -a flag do in rsync -av?",
+              "options": [
+                "Appends to existing files",
+                "Archive mode: preserves permissions, timestamps, symlinks, and ownership",
+                "Automatic mode: skips confirmation",
+                "All: transfers every file"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! -a (archive) is the recommended flag for most rsync jobs \u2014 it preserves file metadata.",
+                "bad": "-a is 'archive mode' \u2014 it preserves permissions, timestamps, symlinks, and ownership. Almost always what you want."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Copy the local file backup.tar.gz to /backups/ on the remote server at 10.0.0.5 as user 'admin'.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "scp backup.tar.gz admin@10.0.0.5:/backups/",
+                "scp backup.tar.gz admin@10.0.0.5:/backups"
+              ],
+              "hint": "Use scp source user@host:/destination",
+              "xp": 25,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>backup.tar.gz               100%  512MB   8.4MB/s   01:01</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: scp backup.tar.gz admin@10.0.0.5:/backups/</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.6",
+          "title": "Checking connections \u2014 ss & netstat",
+          "command": "ss, netstat",
+          "description": "See open ports and active network connections",
+          "xp_total": 50,
+          "steps": [
+            {
+              "type": "concept",
+              "label": "ss and netstat",
+              "text": "<hl>ss</hl> (socket statistics) is the modern tool for viewing network connections. <hl>netstat</hl> is the legacy version.\n\n<cmd>ss -tulnp</cmd>        \u2014 show all listening ports and which process owns them\n<cmd>ss -an</cmd>           \u2014 show all connections (established + listening)\n<cmd>netstat -tulnp</cmd>   \u2014 same as ss -tulnp (older systems)\n\nFlags for ss/netstat:\n<hl>-t</hl> = TCP, <hl>-u</hl> = UDP, <hl>-l</hl> = listening only\n<hl>-n</hl> = show numbers not names, <hl>-p</hl> = show process name\n\nUseful to check: is my web server actually listening? What's using port 3000?",
+              "terminal": [
+                {
+                  "prompt": "user@linux:~$",
+                  "cmd": "ss -tulnp",
+                  "output": "Netid  State   Recv-Q  Send-Q  Local Address:Port  Process\ntcp    LISTEN  0       128     0.0.0.0:22         sshd\ntcp    LISTEN  0       511     0.0.0.0:80         nginx\ntcp    LISTEN  0       128     127.0.0.1:5432     postgres"
+                }
+              ]
+            },
+            {
+              "type": "mcq",
+              "label": "Quick check",
+              "question": "You run ss -tulnp and see port 22 in LISTEN state. What does this mean?",
+              "options": [
+                "Port 22 is blocked by a firewall",
+                "SSH is running and accepting incoming connections",
+                "Port 22 has been attacked",
+                "Something is downloading on port 22"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! LISTEN on port 22 means the SSH daemon is running and waiting for connections.",
+                "bad": "LISTEN state means the process is bound to that port and accepting incoming connections. Port 22 is the default SSH port."
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Fill in the blank",
+              "sentence": [
+                "The ss flags -tulnp stand for TCP, UDP, Listening, Numeric, and ",
+                {
+                  "blank": 0
+                },
+                "."
+              ],
+              "words": [
+                "Process",
+                "Port",
+                "Protocol",
+                "Packet"
+              ],
+              "correct": [
+                "Process"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! -p shows the process name and PID that owns each socket.",
+                "bad": "-t=TCP, -u=UDP, -l=listening, -n=numeric, -p=process. The p flag shows which process owns each connection."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Troubleshooting",
+              "question": "Your web app should be running on port 3000. You run ss -tulnp but don't see port 3000. What does this tell you?",
+              "options": [
+                "The app is running but using a different protocol",
+                "The app process has crashed or never started properly",
+                "Port 3000 is reserved by the OS",
+                "You need to use netstat instead"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! If the port isn't in the listening list, the app isn't running or failed to bind to that port.",
+                "bad": "If the port doesn't appear in ss output, nothing is listening on it \u2014 meaning the process has crashed or wasn't started."
+              }
+            },
+            {
+              "type": "editor",
+              "label": "Write it yourself",
+              "prompt": "Show all TCP ports currently in a LISTEN state along with which process is using them.",
+              "placeholder": "type your command here...",
+              "expected": [
+                "ss -tulnp",
+                "ss -tlnp",
+                "netstat -tulnp",
+                "ss -tnlp"
+              ],
+              "hint": "Use ss with the -t (TCP), -u (UDP), -l (listen), -n (numeric), -p (process) flags.",
+              "xp": 15,
+              "output": {
+                "ok": "<success>\u2713 Correct!</success>\n<info>Netid  State   Local Address:Port  Process\ntcp    LISTEN  0.0.0.0:22          sshd (pid=812)\ntcp    LISTEN  0.0.0.0:80          nginx (pid=1024)\ntcp    LISTEN  127.0.0.1:3306      mysqld (pid=1102)</info>",
+                "bad": "<e>\u2717 Not quite.</e>\n<info>Try: ss -tulnp\n(-t=TCP -u=UDP -l=listening -n=numeric -p=process)</info>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "7.7",
+          "title": "Section 7 review",
+          "command": "review",
+          "description": "Test your networking knowledge",
+          "xp_total": 70,
+          "steps": [
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "Which command shows all your machine's IP addresses on modern Linux?",
+              "options": [
+                "ifconfig",
+                "ip addr",
+                "netstat -i",
+                "ping -a"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! ip addr is the modern tool. ifconfig is legacy and may not be installed.",
+                "bad": "ip addr (or ip a) is the modern way to list network interfaces and addresses."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You want to download a file to a specific path using curl. Which flag do you need?",
+              "options": [
+                "-s",
+                "-I",
+                "-o",
+                "-v"
+              ],
+              "correct": 2,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! -o filename tells curl where to save the response.",
+                "bad": "-o sets the output filename: curl -o local_file.zip https://example.com/file.zip"
+              }
+            },
+            {
+              "type": "fill",
+              "label": "Review",
+              "sentence": [
+                "To copy a local file to a remote server over SSH, use ",
+                {
+                  "blank": 0
+                },
+                " instead of cp."
+              ],
+              "words": [
+                "scp",
+                "ssh",
+                "rsync",
+                "sftp"
+              ],
+              "correct": [
+                "scp",
+                "rsync"
+              ],
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! scp and rsync both transfer files securely over SSH.",
+                "bad": "scp (Secure Copy) or rsync both transfer files over SSH. cp only works on local files."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You run ss -tulnp and see port 80 is not listed. Your nginx config says it should be running. What's the problem?",
+              "options": [
+                "Port 80 is reserved by the OS",
+                "nginx hasn't started or crashed \u2014 it's not listening",
+                "You need to run ss as root",
+                "Port 80 only appears in netstat"
+              ],
+              "correct": 1,
+              "xp": 10,
+              "feedback": {
+                "ok": "Correct! If nginx were running, port 80 would appear in ss output. It's not running.",
+                "bad": "If a service is running, its port appears in ss -tulnp output. No port 80 = nginx is not running."
+              }
+            },
+            {
+              "type": "reorder",
+              "label": "Review",
+              "instruction": "SSH into server 10.10.0.1 using port 2200 as user 'ubuntu':",
+              "tokens": [
+                "ssh",
+                "-p",
+                "2200",
+                "ubuntu@10.10.0.1"
+              ],
+              "correct_order": [
+                "ssh",
+                "-p",
+                "2200",
+                "ubuntu@10.10.0.1"
+              ],
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! ssh -p port user@host.",
+                "bad": "Order: ssh then flags (-p 2200) then destination (user@host)."
+              }
+            },
+            {
+              "type": "mcq",
+              "label": "Review",
+              "question": "You're syncing a website directory to a server repeatedly. Which is better: scp -r or rsync -av?",
+              "options": [
+                "scp -r, because it's simpler",
+                "rsync -av, because it only transfers changed files",
+                "Both are identical in practice",
+                "Neither \u2014 use FTP instead"
+              ],
+              "correct": 1,
+              "xp": 15,
+              "feedback": {
+                "ok": "Correct! For repeated syncs, rsync is far better \u2014 it only sends what changed, saving bandwidth and time.",
+                "bad": "rsync is better for repeated syncs because it does delta transfers \u2014 only changed files are sent. scp always copies everything."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
